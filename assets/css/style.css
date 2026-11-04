@@ -581,7 +581,7 @@ main { padding-top: var(--header-h); }
 
 /* ---------- reveal motion ---------- */
 
-.reveal { opacity: 0; transform: translateY(22px) scale(0.985); transition: opacity var(--dur-lg) var(--ease-out), transform var(--dur-lg) var(--ease-out); }
+.reveal { opacity: 0; transform: translateY(22px) scale(0.985); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
 .reveal.in { opacity: 1; transform: none; }
 .cards .reveal:nth-child(2), .index-list .reveal:nth-child(2) { transition-delay: 40ms; }
 .cards .reveal:nth-child(3), .index-list .reveal:nth-child(3) { transition-delay: 80ms; }
@@ -1059,4 +1059,177 @@ a.contact-card:hover, a.contact-card:focus-visible { border-color: var(--accent)
 @media (prefers-reduced-motion: reduce) {
   .landing-text, .landing-links { transition: none; }
   .proj-bg img, .shot img, .about-photo img, .lb-img { transition: none; }
+}
+
+/* ============================================================
+   Premium 2026 animation layer (GSAP + ScrollTrigger + Lenis)
+   Additive only — no content, color, font or structure changes.
+   ============================================================ */
+
+/* ---------- Lenis base ---------- */
+
+html.lenis, html.lenis body { height: auto; }
+html.lenis { scroll-behavior: auto !important; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* ---------- film grain overlay (site-wide, static, non-interactive) ---------- */
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* ---------- custom cursor (fine pointers only; JS adds .cursor-on) ---------- */
+
+.cursor-dot, .cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0;
+}
+.cursor-dot { width: 6px; height: 6px; background: var(--accent); }
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(139, 92, 246, 0.55);
+  box-shadow: 0 0 18px rgba(139, 92, 246, 0.35);
+}
+html.cursor-on body { cursor: none; }
+html.cursor-on a, html.cursor-on button, html.cursor-on .shot, html.cursor-on [data-cursor] { cursor: none; }
+
+/* ---------- magnetic elements ---------- */
+
+.magnetic { will-change: transform; }
+.landing-link.magnetic, .site-nav a.magnetic, .contact-card.magnetic, .footer-links a.magnetic {
+  transition: border-color var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out),
+              color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+
+/* landing link arrow slide-in */
+.ll-arrow { transition: transform var(--dur) var(--ease-out); }
+.landing-link:hover .ll-arrow, .landing-link:focus-visible .ll-arrow { transform: translateX(6px); }
+
+/* ---------- kinetic masked title (landing hero + project titles) ---------- */
+
+.landing-title.split { background: none; -webkit-text-fill-color: currentColor; color: var(--text); animation: none; }
+.landing-title .lt-line { display: block; overflow: hidden; padding-block: 0.12em; margin-block: -0.12em; }
+.landing-title .lt-ch {
+  display: inline-block;
+  will-change: transform;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.proj-title.split { overflow: hidden; padding-block: 0.12em; margin-top: calc(var(--s-2) - 0.12em); margin-bottom: -0.12em; }
+.proj-title .split-ch { display: inline-block; will-change: transform; }
+
+/* ---------- decorative gradients draw themselves in on load ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .landing::before, .page-head::before, .hero::before { animation: glow-draw 1.4s var(--ease-out) 0.05s both; }
+  @keyframes glow-draw {
+    from { clip-path: circle(0% at 50% 50%); opacity: 0; }
+    to { clip-path: circle(90% at 50% 50%); opacity: 1; }
+  }
+}
+
+/* ---------- CV / list accent line grows with each entry ---------- */
+
+.edu-list li, .exp-list li { position: relative; padding-left: 16px; }
+.edu-list li::before, .exp-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.7s var(--ease-out);
+  transition-delay: var(--line-delay, 0ms);
+}
+.edu-list li.in::before, .exp-list li.in::before { transform: scaleY(1); }
+
+/* ---------- email gradient shimmer sweep on hover ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  a[href^="mailto:"]:hover, a[href^="mailto:"]:focus-visible,
+  .contact-card[href^="mailto:"] .cc-value:hover,
+  .contact-card[href^="mailto:"]:hover .cc-value, .contact-card[href^="mailto:"]:focus-visible .cc-value {
+    background-image: linear-gradient(110deg, currentColor 42%, var(--accent-2) 50%, var(--accent) 58%, currentColor 66%);
+    background-size: 260% 100%;
+    background-position: 110% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer-sweep 0.9s var(--ease-out) forwards;
+  }
+  @keyframes shimmer-sweep { to { background-position: -10% 0; } }
+}
+
+/* ---------- active nav page in accent ---------- */
+
+.site-nav a[aria-current="page"] { color: var(--link); }
+
+/* ---------- GSAP pinned projects deck (desktop, motion allowed) ---------- */
+
+body.gsap-deck .proj .reveal { opacity: 1; transform: none; transition: none; }
+body.gsap-deck .proj .proj-bg, body.gsap-deck .proj .proj-bg.armed { opacity: 1; transition: none; }
+body.gsap-deck .proj-bg { will-change: clip-path, transform; }
+body.gsap-deck .proj-content { will-change: transform; }
+
+.proj-counter {
+  position: fixed;
+  right: 24px;
+  bottom: 22px;
+  z-index: 40;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(6, 6, 9, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  pointer-events: none;
+}
+.proj-counter .pc-cur { color: var(--link); font-size: 1rem; font-weight: 800; }
+@media (max-width: 900px) { .proj-counter { display: none; } }
+
+/* ---------- mobile: scroll-snap project cards with crossfade ---------- */
+
+@media (prefers-reduced-motion: no-preference) and (max-width: 768px) {
+  html { scroll-snap-type: y proximity; }
+  .proj { min-height: 100svh; padding-block: 0; scroll-snap-align: start; }
+  .proj-bg { position: absolute; inset: 0; height: auto; min-height: 0; margin-bottom: 0; }
+  .proj-bg::after { display: block; }
+  .proj-content { padding-block: var(--s-5); }
+}
+
+/* ---------- reduced motion: neutralize the whole layer ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  body::after { opacity: 0.03; }
+  .cursor-dot, .cursor-ring { display: none !important; }
+  .edu-list li::before, .exp-list li::before { transform: scaleY(1); transition: none; }
+  .landing-title.split, .proj-title.split { overflow: visible; padding-block: 0; margin-block: 0; }
+  .landing-title.split { background: linear-gradient(100deg, var(--accent-2) 0%, var(--accent) 55%, #c4b5fd 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 }

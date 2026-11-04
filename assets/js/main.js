@@ -102,11 +102,14 @@
 
   const plx = [];
   const projImgs = [];
+  // When the GSAP pinned deck owns the projects page (desktop, motion allowed),
+  // motion.js drives .proj-bg / .proj-content itself — skip the legacy rAF parallax there.
+  const deckOwned = !reduced && !!(window.gsap && window.ScrollTrigger && document.querySelector(".proj") && window.innerWidth > 768);
   if (!reduced) {
     document.querySelectorAll(".big-num").forEach((el) => { el.classList.add("parallax"); plx.push({ el: el, f: 0.1 }); });
     const hp = document.querySelector(".hero-portrait");
     if (hp) { hp.classList.add("parallax"); plx.push({ el: hp, f: 0.045 }); }
-    document.querySelectorAll(".proj").forEach((sec) => {
+    if (!deckOwned) document.querySelectorAll(".proj").forEach((sec) => {
       const bg = sec.querySelector(".proj-bg");
       if (bg) plx.push({ el: bg, f: parseFloat(bg.dataset.speed || "0.22"), ref: sec });
       const img = bg ? bg.querySelector("img") : null;
@@ -134,7 +137,7 @@
   }
 
   const dots = Array.from(document.querySelectorAll(".proj-dots a"));
-  if (dots.length && "IntersectionObserver" in window) {
+  if (dots.length && "IntersectionObserver" in window && !deckOwned) {
     const byId = {};
     dots.forEach((a) => { byId[a.getAttribute("href").slice(1)] = a; });
     const dio = new IntersectionObserver((entries) => {
@@ -167,8 +170,10 @@
       progress.style.transform = "scaleX(" + ratio + ")";
     }
     const vh = window.innerHeight;
+    const deckActive = document.body.classList.contains("gsap-deck");
     if (plx.length) {
       for (const p of plx) {
+        if (deckActive && p.el.closest && p.el.closest(".proj")) continue;
         const ref = p.ref || p.el;
         const r = ref.getBoundingClientRect();
         if (r.bottom < -240 || r.top > vh + 240) continue;
@@ -177,6 +182,7 @@
       }
     }
     for (const p of projImgs) {
+      if (deckActive) continue;
       const r = p.ref.getBoundingClientRect();
       if (r.bottom < -240 || r.top > vh + 240) continue;
       const t = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
