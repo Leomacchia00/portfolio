@@ -1,0 +1,11 @@
+# Host-internal / environment-specific
+.od-skills/
+.od-frames/
+.file-versions/
+*.artifact.json
+
+# Secrets (never commit)
+.env
+.env.*
+*.pem
+*.key
