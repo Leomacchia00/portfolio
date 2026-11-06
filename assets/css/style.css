@@ -1791,3 +1791,134 @@ body.gsap-deck .proj-content { will-change: transform; }
     flex: 0 0 min(280px, 85vw);
   }
 }
+
+/* ---------- Progetto 04: Bat-wing — Full-bleed con descrizione ampliata ---------- */
+.proj-batwing {
+  min-height: 120vh;
+}
+.proj-batwing .proj-bg {
+  inset: -20% 0;
+}
+.proj-batwing .proj-bg::after {
+  background: linear-gradient(180deg, rgba(6, 7, 12, 0.2) 0%, rgba(6, 7, 12, 0.8) 70%);
+}
+.proj-batwing .proj-content {
+  padding-block: var(--s-7);
+  text-align: center;
+}
+.proj-batwing .proj-main {
+  max-width: 60ch;
+  margin: 0 auto;
+}
+
+/* Kicker per tutti i progetti */
+.proj-kicker {
+  display: block;
+  margin-top: 4px;
+  color: var(--link);
+  font-size: var(--fs-h2);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Descrizione ampliata */
+.proj-desc-expand {
+  margin-top: var(--s-4);
+  max-width: 60ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+.proj-desc-expand p {
+  margin-bottom: var(--s-3);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+.proj-desc-expand strong {
+  color: var(--link);
+  font-weight: 700;
+}
+
+/* Gallery estesa per Bat-wing */
+.proj-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: var(--s-3);
+  margin-top: var(--s-5);
+}
+.proj-gallery .shot {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.proj-gallery .shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--dur-lg) var(--ease-out);
+}
+.proj-gallery .shot:hover img,
+.proj-gallery .shot:focus-visible img {
+  transform: scale(1.04);
+}
+
+/* Metadata per tutti i progetti */
+.proj-meta {
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(20, 20, 20, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  margin-top: var(--s-4);
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.proj-meta .meta-item {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s-4);
+}
+.proj-meta .meta-label {
+  color: var(--muted);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.proj-meta .meta-value {
+  color: var(--text);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  text-align: right;
+}
+
+/* Bat-wing specific metadata */
+.proj-batwing .proj-meta {
+  margin-top: var(--s-4);
+}
+
+/* Responsive per Bat-wing */
+@media (max-width: 900px) {
+  .proj-batwing .proj-content {
+    padding-block: var(--s-5);
+  }
+  .proj-batwing .proj-bg {
+    inset: -10% 0;
+  }
+  .proj-desc-expand {
+    font-size: 1rem;
+  }
+  .proj-gallery {
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  }
+  .proj-meta {
+    max-width: 100%;
+  }
+}
