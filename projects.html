@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="dark">
 <title>My projects — Leonardo Macchiarini</title>
 <meta name="description" content="Selected product design projects: SHOCK!, ELIO, Silky Skin, Bat-wing.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070708'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='38' fill='%233b66ff' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070708'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='38' fill='%232D6BFF' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="assets/css/fonts.css">
 <link rel="stylesheet" href="assets/css/layout.css">
 <link rel="stylesheet" href="assets/css/style.css">
@@ -33,7 +33,7 @@
   <div class="container">
     <span class="big-num" aria-hidden="true">03</span>
     <h1>My projects</h1>
-    <p class="lead">Four product design projects, one full screen at a time.</p>
+    <p class="lead">Four product design projects, each with its own visual rhythm.</p>
   </div>
 </section>
 <nav class="proj-dots" aria-label="Project index">
@@ -43,63 +43,138 @@
   <a href="#bat-wing">04</a>
 </nav>
 
-<section class="proj" id="shock">
-  <div class="proj-bg" data-speed="0.22" aria-hidden="true"><img src="assets/img/shock/Shock.18-web.jpg" width="2200" height="1944" alt="" loading="lazy"></div>
+<!-- ============================================================
+     Progetto 01: SHOCK! — Hero full-bleed con mask reveal
+     Layout: sfondo full-bleed, titolo sovrapposto con maschera,
+     rail laterale per meta-dati
+     ============================================================ -->
+<section class="proj proj-shock" id="shock">
+  <div class="proj-bg" data-speed="0.22" aria-hidden="true">
+    <img src="assets/img/shock/Shock.18-web.jpg" width="2200" height="1944" alt="SHOCK! energy-harvesting wheel" loading="lazy">
+  </div>
   <div class="proj-content container">
-    <span class="proj-index reveal" aria-hidden="true">01</span>
-    <h2 class="proj-title reveal">SHOCK!</h2>
-    <p class="proj-sub reveal">Energy-Harvesting Wheel — Bachelor's thesis</p>
-    <p class="proj-desc reveal">E-bike wheel with a 3D-printed TPU lattice tire that absorbs impacts, integrated piezoelectric generators that convert stress into electricity, and a battery in the hub. No punctures, more comfort, more sustainability.</p>
+    <div class="proj-main">
+      <span class="proj-index reveal" aria-hidden="true">01</span>
+      <h2 class="proj-title reveal">SHOCK!</h2>
+      <p class="proj-sub reveal">Energy-Harvesting Wheel — Bachelor's thesis</p>
+      <p class="proj-desc reveal">E-bike wheel with a 3D-printed TPU lattice tire that absorbs impacts, integrated piezoelectric generators that convert stress into electricity, and a battery in the hub. No punctures, more comfort, more sustainability.</p>
+    </div>
+    <aside class="proj-meta reveal" aria-label="Project metadata">
+      <div class="meta-item">
+        <span class="meta-label">Year</span>
+        <span class="meta-value">2024</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Role</span>
+        <span class="meta-value">Design, Prototyping</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Tools</span>
+        <span class="meta-value">Fusion 360, 3D Printing</span>
+      </div>
+    </aside>
     <div class="proj-shots reveal">
-      <button class="shot" type="button" data-caption="SHOCK! — mockup" aria-label="Open image full size: SHOCK! mockup"><img src="assets/img/shock/Mockup-2-web.jpg" width="2200" height="1832" alt="SHOCK! — mockup" loading="lazy"></button>
-      <button class="shot" type="button" data-caption="SHOCK! — render of the wheel" aria-label="Open image full size: SHOCK! wheel render"><img src="assets/img/shock/Shock.25.jpg" width="2520" height="1344" alt="SHOCK! — render of the wheel" loading="lazy"></button>
-      <button class="shot" type="button" data-caption="SHOCK! — prototype, phase 2" aria-label="Open image full size: SHOCK! prototype phase"><img src="assets/img/shock/Fase%202.png" width="641" height="682" alt="SHOCK! — prototype, phase 2" loading="lazy"></button>
+      <button class="shot" type="button" data-caption="SHOCK! — mockup" aria-label="Open image full size: SHOCK! mockup">
+        <img src="assets/img/shock/Mockup-2-web.jpg" width="2200" height="1832" alt="SHOCK! — mockup" loading="lazy">
+      </button>
+      <button class="shot" type="button" data-caption="SHOCK! — render of the wheel" aria-label="Open image full size: SHOCK! wheel render">
+        <img src="assets/img/shock/Shock.25.jpg" width="2520" height="1344" alt="SHOCK! — render of the wheel" loading="lazy">
+      </button>
+      <button class="shot" type="button" data-caption="SHOCK! — prototype, phase 2" aria-label="Open image full size: SHOCK! prototype phase">
+        <img src="assets/img/shock/Fase 2.png" width="641" height="682" alt="SHOCK! — prototype, phase 2" loading="lazy">
+      </button>
     </div>
   </div>
-  <div class="scroll-hint" aria-hidden="true"><span>Scroll</span><svg class="od-icon" style="--od-icon-size:1.25em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+  <div class="scroll-hint" aria-hidden="true">
+    <span>Scroll</span>
+    <svg class="od-icon" style="--od-icon-size:1.25em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
 </section>
 
-<section class="proj" id="elio">
-  <div class="proj-bg" data-speed="0.22" aria-hidden="true"><img src="assets/img/elio/elio-fotomontaggio-web.jpg" width="1467" height="2200" alt="" loading="lazy"></div>
+<!-- ============================================================
+     Progetto 02: ELIO — Colonna sticky + stack immagini
+     Layout: testo sticky a sinistra, immagini che scorrono a destra
+     Rif: Alexandra Căpitănescu
+     ============================================================ -->
+<section class="proj proj-elio" id="elio">
+  <div class="proj-bg" data-speed="0.22" aria-hidden="true">
+    <img src="assets/img/elio/elio-fotomontaggio-web.jpg" width="1467" height="2200" alt="ELIO solar-foldable scooter" loading="lazy">
+  </div>
   <div class="proj-content container">
-    <span class="proj-index reveal" aria-hidden="true">02</span>
-    <h2 class="proj-title reveal">ELIO</h2>
-    <p class="proj-sub reveal">Solar-Foldable Scooter</p>
-    <p class="proj-desc reveal">Foldable electric scooter with accordion-fold solar panels that deploy from the deck while parked, extending range off-grid. Anti-theft: steel cable + app/fingerprint unlock.</p>
-    <div class="proj-shots reveal">
-      <button class="shot" type="button" data-caption="ELIO — folded, photomontage" aria-label="Open image full size: ELIO folded photomontage"><img src="assets/img/elio/elio-164-web.jpg" width="1467" height="2200" alt="ELIO — folded, photomontage" loading="lazy"></button>
-      <button class="shot" type="button" data-caption="ELIO — previous version on the scooter" aria-label="Open image full size: ELIO previous version"><img src="assets/img/elio/elio-old.jpg" width="1467" height="2200" alt="ELIO — previous version mounted on the scooter" loading="lazy"></button>
-      <button class="shot" type="button" data-caption="ELIO — photo of the prototype" aria-label="Open image full size: ELIO prototype photo"><img src="assets/img/elio/WhatsApp%20Image%202025-09-12%20at%2010.08.50.jpeg" width="1600" height="1067" alt="ELIO — photo of the prototype" loading="lazy"></button>
+    <div class="proj-sticky">
+      <span class="proj-index reveal" aria-hidden="true">02</span>
+      <h2 class="proj-title reveal">ELIO</h2>
+      <p class="proj-sub reveal">Solar-Foldable Scooter</p>
+      <p class="proj-desc reveal">Foldable electric scooter with accordion-fold solar panels that deploy from the deck while parked, extending range off-grid. Anti-theft: steel cable + app/fingerprint unlock.</p>
+    </div>
+    <div class="proj-gallery">
+      <div class="gallery-track">
+        <button class="shot" type="button" data-caption="ELIO — folded, photomontage" aria-label="Open image full size: ELIO folded photomontage">
+          <img src="assets/img/elio/elio-164-web.jpg" width="1467" height="2200" alt="ELIO — folded, photomontage" loading="lazy">
+        </button>
+        <button class="shot" type="button" data-caption="ELIO — previous version on the scooter" aria-label="Open image full size: ELIO previous version">
+          <img src="assets/img/elio/elio-old.jpg" width="1467" height="2200" alt="ELIO — previous version mounted on the scooter" loading="lazy">
+        </button>
+        <button class="shot" type="button" data-caption="ELIO — photo of the prototype" aria-label="Open image full size: ELIO prototype photo">
+          <img src="assets/img/elio/WhatsApp Image 2025-09-12 at 10.08.50.jpeg" width="1600" height="1067" alt="ELIO — photo of the prototype" loading="lazy">
+        </button>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="proj" id="silky-skin">
-  <div class="proj-bg" data-speed="0.22" aria-hidden="true"><img src="assets/img/silky-skin/p13-01.jpg" width="2087" height="1379" alt="" loading="lazy"></div>
+<!-- ============================================================
+     Progetto 03: Silky Skin — Strip orizzontale con pin
+     Layout: immagini in strip orizzontale con pin (solo desktop),
+     carosello scroll-snap su mobile
+     Rif: Suho Studio
+     ============================================================ -->
+<section class="proj proj-silky" id="silky-skin">
+  <div class="proj-bg" data-speed="0.22" aria-hidden="true">
+    <img src="assets/img/silky-skin/p13-01.jpg" width="2087" height="1379" alt="Silky Skin universal epilator" loading="lazy">
+  </div>
   <div class="proj-content container">
     <span class="proj-index reveal" aria-hidden="true">03</span>
     <h2 class="proj-title reveal">Silky Skin</h2>
     <p class="proj-sub reveal">Universal Epilator</p>
     <p class="proj-desc reveal">Ergonomic redesign of the Braun Silk-épil: reverse engineering of the internal mechanism, working 3D-printed prototypes.</p>
-    <div class="proj-shots reveal">
-      <button class="shot" type="button" data-caption="Silky Skin — epilator variant render" aria-label="Open image full size: Silky Skin epilator variant render"><img src="assets/img/silky-skin/silk-epil-render-web.jpg" width="1440" height="1800" alt="Silky Skin — epilator variant render" loading="lazy"></button>
-      <button class="shot" type="button" data-caption="Silky Skin — razor variant render" aria-label="Open image full size: Silky Skin razor variant render"><img src="assets/img/silky-skin/rasoio-render-web.jpg" width="1440" height="1800" alt="Silky Skin — razor variant render" loading="lazy"></button>
-      <button class="shot" type="button" data-caption="Silky Skin in use" aria-label="Open image full size: Silky Skin in use"><img src="assets/img/silky-skin/p12-01.jpg" width="520" height="699" alt="Silky Skin in use" loading="lazy"></button>
+    <div class="proj-horiz reveal">
+      <button class="shot" type="button" data-caption="Silky Skin — epilator variant render" aria-label="Open image full size: Silky Skin epilator variant render">
+        <img src="assets/img/silky-skin/silk-epil-render-web.jpg" width="1440" height="1800" alt="Silky Skin — epilator variant render" loading="lazy">
+      </button>
+      <button class="shot" type="button" data-caption="Silky Skin — razor variant render" aria-label="Open image full size: Silky Skin razor variant render">
+        <img src="assets/img/silky-skin/rasoio-render-web.jpg" width="1440" height="1800" alt="Silky Skin — razor variant render" loading="lazy">
+      </button>
+      <button class="shot" type="button" data-caption="Silky Skin in use" aria-label="Open image full size: Silky Skin in use">
+        <img src="assets/img/silky-skin/p12-01.jpg" width="520" height="699" alt="Silky Skin in use" loading="lazy">
+      </button>
     </div>
   </div>
 </section>
 
-<section class="proj" id="bat-wing">
-  <div class="proj-bg" data-speed="0.22" aria-hidden="true"><img src="assets/img/bat-wing/1-web.jpg" width="1920" height="1080" alt="" loading="lazy"></div>
+<!-- ============================================================
+     Progetto 04: Bat-wing — Full-bleed + didascalie
+     Layout: immagine full-bleed, testo minimale, respiro finale
+     ============================================================ -->
+<section class="proj proj-batwing" id="bat-wing">
+  <div class="proj-bg" data-speed="0.22" aria-hidden="true">
+    <img src="assets/img/bat-wing/1-web.jpg" width="1920" height="1080" alt="Bat-wing impact-transforming saddle" loading="lazy">
+  </div>
   <div class="proj-content container">
     <span class="proj-index reveal" aria-hidden="true">04</span>
     <h2 class="proj-title reveal">Bat-wing</h2>
     <p class="proj-sub reveal">Impact-Transforming Saddle</p>
     <p class="proj-desc reveal">Adaptive saddle for e-bikes and electric micromobility.</p>
     <div class="proj-shots reveal">
-      <button class="shot" type="button" data-caption="Bat-wing — final render" aria-label="Open image full size: Bat-wing final render"><img src="assets/img/bat-wing/Rendering%20Finale%201.PNG" width="1920" height="1920" alt="Bat-wing — final render" loading="lazy"></button>
-      <button class="shot" type="button" data-caption="Bat-wing — render" aria-label="Open image full size: Bat-wing render"><img src="assets/img/bat-wing/batwings-1.jpg" width="2200" height="1879" alt="Bat-wing — render" loading="lazy"></button>
-      <button class="shot" type="button" data-caption="Bat-wing — on the e-bike" aria-label="Open image full size: Bat-wing mounted on the e-bike"><img src="assets/img/bat-wing/2.jpg" width="1920" height="1579" alt="Bat-wing — mounted on the e-bike" loading="lazy"></button>
+      <button class="shot" type="button" data-caption="Bat-wing — final render" aria-label="Open image full size: Bat-wing final render">
+        <img src="assets/img/bat-wing/Rendering Finale 1.PNG" width="1920" height="1920" alt="Bat-wing — final render" loading="lazy">
+      </button>
+      <button class="shot" type="button" data-caption="Bat-wing — render" aria-label="Open image full size: Bat-wing render">
+        <img src="assets/img/bat-wing/batwings-1.jpg" width="2200" height="1879" alt="Bat-wing — render" loading="lazy">
+      </button>
+      <button class="shot" type="button" data-caption="Bat-wing — on the e-bike" aria-label="Open image full size: Bat-wing mounted on the e-bike">
+        <img src="assets/img/bat-wing/2.jpg" width="1920" height="1579" alt="Bat-wing — mounted on the e-bike" loading="lazy">
+      </button>
     </div>
   </div>
 </section>

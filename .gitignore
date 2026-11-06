@@ -4,6 +4,13 @@
 .file-versions/
 *.artifact.json
 
+# OS / editor junk
+Thumbs.db
+desktop.ini
+.DS_Store
+*.tmp
+*.log
+
 # Secrets (never commit)
 .env
 .env.*

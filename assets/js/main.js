@@ -101,24 +101,14 @@
   const hint = document.querySelector(".scroll-hint");
 
   const plx = [];
-  const projImgs = [];
-  // When the GSAP pinned deck owns the projects page (desktop, motion allowed),
-  // motion.js drives .proj-bg / .proj-content itself — skip the legacy rAF parallax there.
-  const deckOwned = !reduced && !!(window.gsap && window.ScrollTrigger && document.querySelector(".proj") && window.innerWidth > 768);
   if (!reduced) {
     document.querySelectorAll(".big-num").forEach((el) => { el.classList.add("parallax"); plx.push({ el: el, f: 0.1 }); });
     const hp = document.querySelector(".hero-portrait");
     if (hp) { hp.classList.add("parallax"); plx.push({ el: hp, f: 0.045 }); }
-    if (!deckOwned) document.querySelectorAll(".proj").forEach((sec) => {
-      const bg = sec.querySelector(".proj-bg");
-      if (bg) plx.push({ el: bg, f: parseFloat(bg.dataset.speed || "0.22"), ref: sec });
-      const img = bg ? bg.querySelector("img") : null;
-      if (img) projImgs.push({ el: img, ref: sec });
-      const ct = sec.querySelector(".proj-content");
-      if (ct) plx.push({ el: ct, f: -0.05, ref: sec });
-    });
+    // .proj-bg e .proj-content sono gestiti da motion.js (GSAP/ScrollTrigger)
+    // su tutte le larghezze. Non aggiungerli a plx per evitare doppio motion.
 
-    const landing = document.querySelector(".landing");
+  const landing = document.querySelector(".landing");
     if (landing && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
       const ltxt = landing.querySelector(".landing-text");
       const llinks = landing.querySelector(".landing-links");
@@ -137,7 +127,8 @@
   }
 
   const dots = Array.from(document.querySelectorAll(".proj-dots a"));
-  if (dots.length && "IntersectionObserver" in window && !deckOwned) {
+  if (dots.length && "IntersectionObserver" in window) {
+    // Fallback per quando motion.js non gira (reduced motion o no GSAP)
     const byId = {};
     dots.forEach((a) => { byId[a.getAttribute("href").slice(1)] = a; });
     const dio = new IntersectionObserver((entries) => {
@@ -163,30 +154,27 @@
       header.classList.toggle("hide", y > 140 && y > lastY && !menuOpen);
     }
     lastY = y;
-    if (hint) hint.style.opacity = y > window.innerHeight * 0.5 ? "0" : "1";
+    if (hint) {
+      if (y > window.innerHeight * 0.5) {
+        hint.classList.add("hidden");
+      } else {
+        hint.classList.remove("hidden");
+      }
+    }
     if (progress) {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const ratio = max > 0 ? Math.min(1, y / max) : 0;
       progress.style.transform = "scaleX(" + ratio + ")";
     }
     const vh = window.innerHeight;
-    const deckActive = document.body.classList.contains("gsap-deck");
     if (plx.length) {
       for (const p of plx) {
-        if (deckActive && p.el.closest && p.el.closest(".proj")) continue;
         const ref = p.ref || p.el;
         const r = ref.getBoundingClientRect();
         if (r.bottom < -240 || r.top > vh + 240) continue;
-        const delta = (r.top + r.height / 2 - vh / 2) / vh;
+        const delta = (r.top + ref.height / 2 - vh / 2) / vh;
         p.el.style.transform = "translate3d(0," + (-delta * p.f * 120).toFixed(2) + "px,0)";
       }
-    }
-    for (const p of projImgs) {
-      if (deckActive) continue;
-      const r = p.ref.getBoundingClientRect();
-      if (r.bottom < -240 || r.top > vh + 240) continue;
-      const t = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
-      p.el.style.transform = "scale(" + (1.16 - 0.16 * t).toFixed(4) + ")";
     }
   };
   const requestFrame = () => {

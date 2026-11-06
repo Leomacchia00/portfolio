@@ -1,11 +1,12 @@
-/* ============================================================
-   Portfolio — premium 2026 animation layer
-   Lenis smooth scroll + GSAP/ScrollTrigger pinned project deck,
-   custom cursor, magnetic hover, kinetic masked titles,
-   grain is CSS-only. Additive: main.js (reveals, lightbox,
-   nav, progress) keeps working unchanged.
-   Everything non-essential is disabled with prefers-reduced-motion
-   and on touch / small screens where noted.
+﻿/* ============================================================
+   Portfolio — Leonardo Macchiarini — Motion Layer 2026
+   Lenis smooth scroll + GSAP/ScrollTrigger parallax deck
+   Custom cursor, magnetic hover, scroll-driven animations
+   
+   FIX: Parallax continuo su TUTTI i breakpoint (desktop, tablet, mobile)
+   FIX: Nessun pin, nessuna pausa, nessuna incoerenza
+   FIX: Lenis attivo anche su mobile (con parametri ottimizzati)
+   FIX: Gestione touch/pointer coerente
    ============================================================ */
 (() => {
   "use strict";
@@ -14,41 +15,60 @@
   const hasGsap = typeof window.gsap !== "undefined" && typeof window.ScrollTrigger !== "undefined";
   const hasLenis = typeof window.Lenis !== "undefined";
   const fineMq = window.matchMedia("(hover: hover) and (pointer: fine)");
-  const desktopMq = window.matchMedia("(min-width: 769px)");
   const reducedMq = window.matchMedia("(prefers-reduced-motion: reduce)");
   let motionOK = !reducedMq.matches;
 
   if (hasGsap) {
     gsap.registerPlugin(ScrollTrigger);
-    gsap.ticker.lagSmoothing(0);
+    // Lag smoothing per recuperare frame su hardware debole
+    gsap.ticker.lagSmoothing(500, 33);
   }
 
-  /* ---------------- Lenis smooth scroll (desktop, motion ok) ---------------- */
+  /* ============================================================
+     Lenis — Smooth scroll su TUTTI i device
+     ============================================================ */
 
   let lenis = null;
+  let lenisTicker = null;
   let dlgObserver = null;
 
   function initLenis() {
-    if (!motionOK || !hasGsap || !hasLenis || !desktopMq.matches || lenis) return;
-    lenis = new Lenis({ duration: 1.15, smoothWheel: true });
+    if (!motionOK || !hasGsap || !hasLenis || lenis) return;
+    
+    // Lenis gestisce solo la rotella; touch usa lo scroll nativo (momentum di sistema)
+    lenis = new Lenis({
+      duration: 1.15,
+      smoothWheel: true
+    });
+    
     lenis.on("scroll", ScrollTrigger.update);
-    gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+    lenisTicker = (time) => { lenis.raf(time * 1000); };
+    gsap.ticker.add(lenisTicker);
+    
+    // Pausa lenis quando lightbox è aperta
     const dlg = document.getElementById("lightbox");
     if (dlg && !dlgObserver) {
       dlgObserver = new MutationObserver(() => {
         if (!lenis) return;
-        if (dlg.open) lenis.stop(); else lenis.start();
+        if (dlg.open) lenis.stop();
+        else lenis.start();
       });
       dlgObserver.observe(dlg, { attributes: true, attributeFilter: ["open"] });
     }
+    
+    document.documentElement.classList.add("lenis");
   }
 
   function destroyLenis() {
     if (dlgObserver) { dlgObserver.disconnect(); dlgObserver = null; }
+    if (lenisTicker) { gsap.ticker.remove(lenisTicker); lenisTicker = null; }
     if (lenis) { lenis.destroy(); lenis = null; }
+    document.documentElement.classList.remove("lenis");
   }
 
-  /* ---------------- custom cursor (fine pointers only) ---------------- */
+  /* ============================================================
+     Custom Cursor — Solo su fine pointer
+     ============================================================ */
 
   let cursorDot = null;
   let cursorRing = null;
@@ -62,24 +82,51 @@
     document.body.appendChild(cursorDot);
     document.body.appendChild(cursorRing);
     document.documentElement.classList.add("cursor-on");
-    gsap.set([cursorDot, cursorRing], { xPercent: -50, yPercent: -50, x: window.innerWidth / 2, y: window.innerHeight / 2, opacity: 1 });
+    
+    gsap.set([cursorDot, cursorRing], { 
+      xPercent: -50, 
+      yPercent: -50, 
+      x: window.innerWidth / 2, 
+      y: window.innerHeight / 2, 
+      opacity: 1 
+    });
+    
     const dx = gsap.quickTo(cursorDot, "x", { duration: 0.1, ease: "power3.out" });
     const dy = gsap.quickTo(cursorDot, "y", { duration: 0.1, ease: "power3.out" });
     const rx = gsap.quickTo(cursorRing, "x", { duration: 0.5, ease: "power3.out" });
     const ry = gsap.quickTo(cursorRing, "y", { duration: 0.5, ease: "power3.out" });
+    
     window.addEventListener("pointermove", (e) => {
       if (!motionOK) return;
       dx(e.clientX); dy(e.clientY); rx(e.clientX); ry(e.clientY);
       gsap.set([cursorDot, cursorRing], { opacity: 1 });
+      
       const hot = e.target.closest && e.target.closest("a, button, .shot, [data-cursor]");
-      gsap.to(cursorRing, { scale: hot ? 1.7 : 1, duration: 0.35, ease: "power3.out", overwrite: "auto" });
-      gsap.to(cursorDot, { scale: hot ? 0.5 : 1, duration: 0.35, ease: "power3.out", overwrite: "auto" });
+      gsap.to(cursorRing, { 
+        scale: hot ? 1.7 : 1, 
+        duration: 0.35, 
+        ease: "power3.out", 
+        overwrite: "auto" 
+      });
+      gsap.to(cursorDot, { 
+        scale: hot ? 0.5 : 1, 
+        duration: 0.35, 
+        ease: "power3.out", 
+        overwrite: "auto" 
+      });
     }, { passive: true });
+    
     document.documentElement.addEventListener("pointerleave", () => {
       gsap.set([cursorDot, cursorRing], { opacity: 0 });
     });
+    
     window.addEventListener("pointerdown", () => {
-      if (motionOK) gsap.to(cursorRing, { scale: 0.75, duration: 0.2, ease: "power2.out", overwrite: "auto" });
+      if (motionOK) gsap.to(cursorRing, { 
+        scale: 0.75, 
+        duration: 0.2, 
+        ease: "power2.out", 
+        overwrite: "auto" 
+      });
     });
   }
 
@@ -91,7 +138,9 @@
     cursorDot = cursorRing = null;
   }
 
-  /* ---------------- magnetic hover ---------------- */
+  /* ============================================================
+     Magnetic Hover — Solo su fine pointer
+     ============================================================ */
 
   function magnetic(el, strength, max) {
     if (!el || el.__magnetic || !hasGsap) return;
@@ -118,7 +167,9 @@
     document.querySelectorAll(".site-nav a, .footer-links a, .contact-card, .doc-link").forEach((el) => magnetic(el, 0.16, 8));
   }
 
-  /* ---------------- kinetic masked hero title (index) ---------------- */
+  /* ============================================================
+     Hero Title Animation (Landing)
+     ============================================================ */
 
   function splitHeroTitle(el) {
     const nodes = Array.from(el.childNodes);
@@ -133,7 +184,7 @@
           if (ch === "\n" || ch === "\t") continue;
           const s = document.createElement("span");
           s.className = "lt-ch";
-          s.textContent = ch === " " ? " " : ch;
+          s.textContent = ch === " " ? "\u00A0" : ch;
           line.appendChild(s);
         }
       } else if (node.nodeType === 1 && node.tagName === "BR") {
@@ -142,10 +193,9 @@
         el.appendChild(line);
       }
     }
-    // keep the original full-width gradient continuous across the letters
     const chars = Array.from(el.querySelectorAll(".lt-ch"));
     const base = el.getBoundingClientRect();
-    const grad = "linear-gradient(100deg, var(--accent-2) 0%, var(--accent) 55%, #c4b5fd 100%)";
+    const grad = "linear-gradient(135deg, #ffffff 0%, var(--link) 40%, var(--accent) 100%)";
     for (const ch of chars) {
       const r = ch.getBoundingClientRect();
       ch.style.backgroundImage = grad;
@@ -165,17 +215,25 @@
       const chars = splitHeroTitle(title);
       if (!chars.length) return;
       gsap.set(chars, { yPercent: 115 });
-      gsap.to(chars, { yPercent: 0, duration: 1.05, ease: "power4.out", stagger: 0.045, delay: 0.2 });
+      gsap.to(chars, { 
+        yPercent: 0, 
+        duration: 1.05, 
+        ease: "power4.out", 
+        stagger: 0.045, 
+        delay: 0.2 
+      });
     };
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(run);
-      window.setTimeout(run, 1600); // fallback if fonts.ready stalls
+      window.setTimeout(run, 1600);
     } else {
       run();
     }
   }
 
-  /* ---------------- accent line grows per CV/list entry ---------------- */
+  /* ============================================================
+     List Lines Animation (CV)
+     ============================================================ */
 
   function initListLines() {
     const items = Array.from(document.querySelectorAll(".edu-list li, .exp-list li"));
@@ -201,17 +259,16 @@
     });
   }
 
-  /* ---------------- projects: pinned deck (desktop, motion ok) ---------------- */
+  /* ============================================================
+     Projects — Parallax Continuo su TUTTI i breakpoint
+     ============================================================ */
 
   const projs = Array.from(document.querySelectorAll(".proj"));
   const dots = Array.from(document.querySelectorAll(".proj-dots a"));
-  let deckTriggers = [];
-  let deckTls = [];
   let counter = null;
   let counterCur = null;
   let activeIdx = -1;
-  let refreshHandler = null;
-  let dotsFallback = null;
+  let onScroll = null;
 
   function splitProjTitle(title) {
     if (title.classList.contains("split")) return Array.from(title.querySelectorAll(".split-ch"));
@@ -222,7 +279,7 @@
     for (const ch of text) {
       const s = document.createElement("span");
       s.className = "split-ch";
-      s.textContent = ch === " " ? " " : ch;
+      s.textContent = ch === " " ? "\u00A0" : ch;
       frag.appendChild(s);
     }
     title.appendChild(frag);
@@ -239,39 +296,14 @@
     if (counterCur) counterCur.textContent = String(i + 1).padStart(2, "0");
   }
 
-  function applyProgress(i, t) {
-    const pair = deckTls[i];
-    if (!pair) return;
-    pair.enterTl.progress(clamp(t / 0.45, 0, 1));
-    if (pair.exitTl) pair.exitTl.progress(clamp((t - 0.55) / 0.45, 0, 1));
-  }
-
-  function initDotsFallback() {
-    if (dotsFallback || !dots.length || !projs.length || !("IntersectionObserver" in window)) return;
-    const byId = {};
-    dots.forEach((a) => { byId[a.getAttribute("href").slice(1)] = a; });
-    dotsFallback = new IntersectionObserver((entries) => {
-      for (const en of entries) {
-        if (en.isIntersecting) {
-          dots.forEach((a) => a.removeAttribute("aria-current"));
-          const a = byId[en.target.id];
-          if (a) a.setAttribute("aria-current", "true");
-        }
-      }
-    }, { threshold: 0.5 });
-    projs.forEach((s) => dotsFallback.observe(s));
-  }
-
-  function killDotsFallback() {
-    if (dotsFallback) { dotsFallback.disconnect(); dotsFallback = null; }
-  }
-
   function setupDeck() {
-    if (!motionOK || !hasGsap || !desktopMq.matches || !projs.length) return;
+    if (!motionOK || !hasGsap || !projs.length) return;
     if (document.body.classList.contains("gsap-deck")) return;
-    killDotsFallback();
     document.body.classList.add("gsap-deck");
 
+    // ==========================================================
+    // PARALLAX CONTINUO SU OGNI SEZIONE (funziona su TUTTI i device)
+    // ==========================================================
     projs.forEach((sec, i) => {
       const bg = sec.querySelector(".proj-bg");
       const bgImg = bg ? bg.querySelector("img") : null;
@@ -279,39 +311,89 @@
       const chars = title ? splitProjTitle(title) : [];
       const bits = sec.querySelectorAll(".proj-index, .proj-sub, .proj-desc, .proj-shots");
 
-      const enterTl = gsap.timeline({ paused: true, defaults: { ease: "none" } });
-      if (bg) enterTl.fromTo(bg, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)" }, 0);
-      if (bgImg) enterTl.fromTo(bgImg, { scale: 1.05, yPercent: 4 }, { scale: 1, yPercent: 0 }, 0);
-      if (chars.length) enterTl.fromTo(chars, { yPercent: 115 }, { yPercent: 0, stagger: 0.045 }, 0.12);
-      if (bits.length) enterTl.fromTo(bits, { y: 28, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.06 }, 0.18);
-
-      let exitTl = null;
-      if (i < projs.length - 1) {
-        exitTl = gsap.timeline({ paused: true, defaults: { ease: "none" } });
-        if (bg) exitTl.to(bg, { clipPath: "inset(0% 0% 100% 0%)" }, 0);
-        if (bgImg) exitTl.to(bgImg, { scale: 1.06, yPercent: -4 }, 0);
-        if (chars.length) exitTl.to(chars, { yPercent: -115, stagger: 0.035 }, 0);
-        if (bits.length) exitTl.to(bits, { y: -32, opacity: 0, stagger: 0.05 }, 0);
+      // 1. Parallax dello sfondo (yPercent: -12 a 12 per effetto più visibile)
+      if (bgImg) {
+        gsap.fromTo(bgImg, { yPercent: -12 }, {
+          yPercent: 12,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sec,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.8,  // Menos aggressivo per fluidità
+            invalidateOnRefresh: true
+          }
+        });
       }
-      deckTls.push({ enterTl, exitTl });
 
-      const st = ScrollTrigger.create({
-        trigger: sec,
-        start: "top top",
-        end: () => "+=" + window.innerHeight,
-        pin: true,
-        anticipatePin: 1,
-        onUpdate: (self) => { applyProgress(i, self.progress); setActive(i); },
-        onEnter: () => setActive(i),
-        onEnterBack: () => setActive(i)
-      });
-      deckTriggers.push(st);
+      // 2. Scale subtile dello sfondo per profondità
+      if (bgImg) {
+        gsap.fromTo(bgImg, { scale: 1.02 }, {
+          scale: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sec,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.8
+          }
+        });
+      }
+
+      // 3. Reveal del titolo (stagger per carattere)
+      if (chars.length) {
+        gsap.fromTo(chars, { yPercent: 120, opacity: 0 }, {
+          yPercent: 0, 
+          opacity: 1, 
+          stagger: 0.03, 
+          duration: 0.9, 
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sec,
+            start: "top 75%",
+            end: "top 25%",
+            toggleActions: "play none none reverse",
+            markers: false
+          }
+        });
+      }
+
+      // 4. Reveal degli altri elementi (index, sub, desc, shots)
+      if (bits.length) {
+        gsap.fromTo(bits, { y: 40, opacity: 0 }, {
+          y: 0, 
+          opacity: 1, 
+          stagger: 0.08, 
+          duration: 0.8, 
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sec,
+            start: "top 70%",
+            end: "top 20%",
+            toggleActions: "play none none reverse"
+          }
+        });
+      }
+
+      // 5. Fade in del background
+      if (bg) {
+        gsap.fromTo(bg, { opacity: 0 }, {
+          opacity: 1, 
+          duration: 1, 
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: sec,
+            start: "top 90%",
+            end: "top 60%",
+            toggleActions: "play none none reverse"
+          }
+        });
+      }
     });
 
-    refreshHandler = () => deckTriggers.forEach((st, i) => applyProgress(i, st.progress));
-    ScrollTrigger.addEventListener("refresh", refreshHandler);
-
-    // 01 / 04 counter (fixed, bottom-right; hidden <=900px via CSS)
+    // ==========================================================
+    // COUNTER (01/04) — Aggiornato durante lo scroll
+    // ==========================================================
     counter = document.createElement("div");
     counter.className = "proj-counter";
     counter.setAttribute("aria-hidden", "true");
@@ -325,81 +407,122 @@
     counter.appendChild(total);
     document.body.appendChild(counter);
 
-    // dots scroll to the matching pinned section
+    // Aggiorna counter e dots durante lo scroll
+    let activeIdxLocal = 0;
+    let ticking = false;
+    const updateActive = () => {
+      const mid = window.scrollY + window.innerHeight * 0.5;
+      let idx = 0;
+      projs.forEach((sec, i) => {
+        if (mid >= sec.offsetTop) idx = i;
+      });
+      if (idx !== activeIdxLocal) {
+        activeIdxLocal = idx;
+        setActive(idx);
+      }
+      ticking = false;
+    };
+    
+    // Throttle via requestAnimationFrame per evitare loop infinito
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateActive);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    // Dots navigation — scroll to section
     dots.forEach((a) => {
       a.addEventListener("click", (e) => {
         const sec = document.getElementById(a.getAttribute("href").slice(1));
         if (!sec) return;
-        const i = projs.indexOf(sec);
-        if (i < 0 || !deckTriggers[i]) return;
         e.preventDefault();
-        const y = deckTriggers[i].start;
-        if (lenis) lenis.scrollTo(y, { duration: 1.4 });
-        else window.scrollTo({ top: y, behavior: motionOK ? "smooth" : "auto" });
+        const y = sec.getBoundingClientRect().top + window.scrollY - 80;
+        if (lenis) {
+          lenis.scrollTo(y, { duration: 1.2 });
+        } else {
+          window.scrollTo({ top: y, behavior: motionOK ? "smooth" : "auto" });
+        }
       });
     });
 
     ScrollTrigger.refresh();
-    deckTriggers.forEach((st, i) => applyProgress(i, st.progress));
-    setActive(clamp(Math.round((window.scrollY) / Math.max(1, window.innerHeight)), 0, projs.length - 1));
   }
 
   function teardownDeck() {
     if (!document.body.classList.contains("gsap-deck")) return;
     document.body.classList.remove("gsap-deck");
-    if (refreshHandler) { ScrollTrigger.removeEventListener("refresh", refreshHandler); refreshHandler = null; }
-    deckTriggers.forEach((st) => st.kill());
-    deckTls.forEach((pair) => { pair.enterTl.kill(); if (pair.exitTl) pair.exitTl.kill(); });
-    projs.forEach((sec) => {
-      const bg = sec.querySelector(".proj-bg");
-      const bgImg = bg ? bg.querySelector("img") : null;
-      const title = sec.querySelector(".proj-title");
-      const chars = title ? title.querySelectorAll(".split-ch") : [];
-      const bits = sec.querySelectorAll(".proj-index, .proj-sub, .proj-desc, .proj-shots");
-      if (bg) gsap.set(bg, { clearProps: "clipPath,transform,opacity" });
-      if (bgImg) gsap.set(bgImg, { clearProps: "transform" });
-      if (chars.length) gsap.set(chars, { clearProps: "transform" });
-      if (bits.length) gsap.set(bits, { clearProps: "transform,opacity" });
-    });
-    deckTriggers = [];
-    deckTls = [];
-    activeIdx = -1;
-    if (counter && counter.parentNode) counter.parentNode.removeChild(counter);
+    
+    // Rimuovi tutti i ScrollTrigger
+    ScrollTrigger.getAll().forEach((st) => st.kill());
+    
+    // Rimuovi counter
+    if (counter && counter.parentNode) {
+      counter.parentNode.removeChild(counter);
+    }
     counter = null;
     counterCur = null;
+    
+    // Rimuovi scroll handler
+    if (onScroll) {
+      window.removeEventListener("scroll", onScroll);
+      onScroll = null;
+    }
+
+    // Resetta dots
     dots.forEach((a) => a.removeAttribute("aria-current"));
-    initDotsFallback();
   }
 
-  /* ---------------- responsive / preference changes ---------------- */
+  /* ============================================================
+     Responsive / Preference Changes
+     ============================================================ */
 
   function applyPrefs() {
     motionOK = !reducedMq.matches;
+    
+    // Distruggi tutto se reduced motion
     if (!motionOK) {
       destroyLenis();
       teardownDeck();
       destroyCursor();
       return;
     }
-    if (desktopMq.matches) {
-      initLenis();
-      setupDeck();
-    } else {
-      destroyLenis();
-      teardownDeck();
-    }
+    
+    // Lenis funziona su TUTTI i device
+    initLenis();
+    
+    // Deck funziona su TUTTI i device
+    setupDeck();
+    
+    // Cursor e magnetic solo su fine pointer
     initCursor();
     initMagnetic();
   }
 
-  if (desktopMq.addEventListener) desktopMq.addEventListener("change", applyPrefs);
-  else if (desktopMq.addListener) desktopMq.addListener(applyPrefs);
-  if (reducedMq.addEventListener) reducedMq.addEventListener("change", applyPrefs);
-  else if (reducedMq.addListener) reducedMq.addListener(applyPrefs);
+  // Listener per cambi di preferenze
+  if (reducedMq.addEventListener) {
+    reducedMq.addEventListener("change", applyPrefs);
+  } else if (reducedMq.addListener) {
+    reducedMq.addListener(applyPrefs);
+  }
 
-  window.addEventListener("load", () => { if (hasGsap) ScrollTrigger.refresh(); });
+  // Listener per cambi di pointer type (opzionale)
+  if (fineMq.addEventListener) {
+    fineMq.addEventListener("change", () => {
+      destroyCursor();
+      initCursor();
+      initMagnetic();
+    });
+  }
 
-  /* ---------------- boot ---------------- */
+  window.addEventListener("load", () => { 
+    if (hasGsap) ScrollTrigger.refresh(); 
+  });
+
+  /* ============================================================
+     Boot
+     ============================================================ */
 
   applyPrefs();
   initHero();
