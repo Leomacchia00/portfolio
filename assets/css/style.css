@@ -1351,25 +1351,8 @@ body::after {
   will-change: opacity;
 }
 
-/* ---------- custom cursor (fine pointers only; JS adds .cursor-on) (DeepBook Style) ---------- */
+/* ---------- custom cursor (fine pointers only; JS adds .cursor-on) ---------- */
 
-.cursor-dot, .cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 999;
-  pointer-events: none;
-  border-radius: 50%;
-  opacity: 0;
-  will-change: transform, opacity;
-}
-.cursor-dot { width: 6px; height: 6px; background: var(--accent); }
-.cursor-ring {
-  width: 34px;
-  height: 34px;
-  border: 1px solid rgba(45, 107, 255, 0.55);
-  box-shadow: 0 0 18px rgba(45, 107, 255, 0.35);
-}
 html.cursor-on body { cursor: none; }
 html.cursor-on a, html.cursor-on button, html.cursor-on .shot, html.cursor-on [data-cursor] { cursor: none; }
 
@@ -1896,5 +1879,221 @@ body.gsap-deck .proj-content { will-change: transform; }
   }
   .proj-meta {
     max-width: 100%;
+  }
+}
+
+/* ============================================================
+   Progetto 04: Bat-wing — Horizontal Scroll Gallery
+   ============================================================ */
+
+.proj-batwing .batwing-wrapper {
+  position: relative;
+  padding: var(--s-4) 0 var(--s-6);
+  min-height: 100vh;
+}
+
+.proj-batwing .proj-bg {
+  position: absolute;
+  inset: -10% 0;
+  z-index: 0;
+}
+
+.proj-batwing .proj-bg img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+  filter: blur(2px);
+}
+
+.proj-batwing .proj-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(30, 110, 243, 0.08) 0%, transparent 70%);
+}
+
+.proj-batwing .proj-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Horizontal Gallery */
+.proj-batwing .proj-gallery-horiz {
+  position: relative;
+  height: 80vh;
+  min-height: 600px;
+  max-height: 800px;
+  margin: var(--s-4) 0 var(--s-6);
+  overflow: hidden;
+}
+
+.proj-batwing .gallery-track-horiz {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  display: flex;
+  gap: var(--s-5);
+  padding: 0 var(--s-5);
+  height: 70%;
+  max-height: 500px;
+  will-change: transform;
+}
+
+.proj-batwing .gallery-track-horiz .shot {
+  position: relative;
+  flex: 0 0 auto;
+  width: 400px;
+  height: 100%;
+  cursor: pointer;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: all var(--dur) var(--ease-out);
+}
+
+.proj-batwing .gallery-track-horiz .shot:hover {
+  box-shadow: 0 20px 40px rgba(30, 110, 243, 0.15);
+  z-index: 10;
+}
+
+.proj-batwing .gallery-track-horiz .shot img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur) var(--ease-out);
+  will-change: transform;
+}
+
+.proj-batwing .gallery-track-horiz .shot.active {
+  transform: scale(1.1);
+  z-index: 20;
+  box-shadow: 0 30px 60px rgba(30, 110, 243, 0.25);
+}
+
+.proj-batwing .scroll-hint-horiz {
+  position: absolute;
+  bottom: var(--s-3);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  color: var(--muted);
+  font-size: var(--fs-small);
+  animation: bounce 2s infinite;
+  pointer-events: none;
+}
+
+.proj-batwing .scroll-hint-horiz svg {
+  color: var(--accent);
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(10px); }
+}
+
+/* Particle Trail Canvas */
+#particle-trail-batwing {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--z-trail, 9999);
+  opacity: 0.6;
+}
+
+/* Custom Cursor Elements */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  pointer-events: none;
+  z-index: var(--z-cursor, 9998);
+  border-radius: 50%;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.cursor-dot { 
+  width: 6px; 
+  height: 6px; 
+  background: var(--accent); 
+  top: 0;
+  left: 0;
+}
+.cursor-ring {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 18px rgba(45, 107, 255, 0.35);
+  transition: all var(--dur) var(--ease-out);
+  top: 0;
+  left: 0;
+}
+
+/* Effects Toggle Button */
+.effect-toggle-batwing {
+  position: fixed;
+  bottom: var(--s-3);
+  right: var(--s-3);
+  z-index: var(--z-fx, 1000);
+  padding: 0;
+  width: 56px;
+  height: 56px;
+  background: var(--accent);
+  border: none;
+  border-radius: 50%;
+  color: var(--bg);
+  font-family: var(--sans);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all var(--dur) var(--ease-out);
+  box-shadow: 0 10px 30px rgba(30, 110, 243, 0.3);
+}
+
+.effect-toggle-batwing:hover {
+  transform: scale(1.1);
+  box-shadow: 0 15px 40px rgba(30, 110, 243, 0.4);
+}
+
+.effect-toggle-batwing.active {
+  background: var(--accent-strong);
+}
+
+/* Responsive adjustments for Bat-wing */
+@media (max-width: 768px) {
+  .proj-batwing .gallery-track-horiz .shot {
+    width: 250px;
+  }
+  .effect-toggle-batwing {
+    bottom: var(--s-3);
+    right: var(--s-2);
+    width: 48px;
+    height: 48px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .proj-batwing .gallery-track-horiz .shot {
+    width: 200px;
+  }
+  .effect-toggle-batwing {
+    bottom: var(--s-2);
+    right: var(--s-2);
+    width: 44px;
+    height: 44px;
+    font-size: var(--fs-micro);
   }
 }

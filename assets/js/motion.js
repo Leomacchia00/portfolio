@@ -17,6 +17,11 @@
   const fineMq = window.matchMedia("(hover: hover) and (pointer: fine)");
   const reducedMq = window.matchMedia("(prefers-reduced-motion: reduce)");
   let motionOK = !reducedMq.matches;
+  
+  /* User effects toggle — starts enabled, respects motionOK */
+  let effectsEnabled = true;
+  let particleAnimationId = null;
+  let particles = [];
 
   if (hasGsap) {
     gsap.registerPlugin(ScrollTrigger);
@@ -75,12 +80,12 @@
 
   function initCursor() {
     if (cursorDot || !fineMq.matches || !motionOK || !hasGsap) return;
-    cursorDot = document.createElement("div");
-    cursorDot.className = "cursor-dot";
-    cursorRing = document.createElement("div");
-    cursorRing.className = "cursor-ring";
-    document.body.appendChild(cursorDot);
-    document.body.appendChild(cursorRing);
+    // Use existing cursor elements if they exist in the DOM
+    cursorDot = document.querySelector(".cursor-dot");
+    cursorRing = document.querySelector(".cursor-ring");
+    
+    if (!cursorDot || !cursorRing) return;
+    
     document.documentElement.classList.add("cursor-on");
     
     gsap.set([cursorDot, cursorRing], { 
@@ -133,8 +138,8 @@
   function destroyCursor() {
     if (!cursorDot) return;
     document.documentElement.classList.remove("cursor-on");
-    cursorDot.remove();
-    cursorRing.remove();
+    // Don't remove the elements, just hide them (they exist in HTML)
+    gsap.set([cursorDot, cursorRing], { opacity: 0 });
     cursorDot = cursorRing = null;
   }
 
@@ -567,6 +572,146 @@
     }
   }
 
+  /* ============================================================
+     Particle Trail Effect (Bat-wing section)
+     ============================================================ */
+
+  let canvas = null;
+  let ctx = null;
+
+  function initParticles() {
+    if (!motionOK || !effectsEnabled || !fineMq.matches) return;
+    if (canvas && ctx) return; // already initialized
+    
+    canvas = document.getElementById("particle-trail-batwing");
+    if (!canvas) return;
+    
+    ctx = canvas.getContext("2d");
+    
+    function resizeCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+      ctx.scale(dpr, dpr);
+    }
+    
+    function createParticle(x, y, speedX, speedY) {
+      particles.push({
+        x: x,
+        y: y,
+        size: Math.random() * 2 + 1,
+        speedX: speedX || (Math.random() - 0.5) * 1.5,
+        speedY: speedY || (Math.random() - 0.5) * 1.5,
+        life: 100,
+        maxLife: 100
+      });
+      if (particles.length > 30) {
+        particles.shift();
+      }
+    }
+    
+    function animateParticles() {
+      if (!effectsEnabled || !canvas || !ctx) {
+        return;
+      }
+      
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Remove dead particles
+      particles = particles.filter(p => p.life > 0);
+      
+      // Draw connections between particles
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const p1 = particles[i];
+          const p2 = particles[j];
+          const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = "rgba(30, 110, 243, " + (0.2 * (1 - dist / 100)) + ")";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+      
+      // Draw and update particles
+      for (let k = 0; k < particles.length; k++) {
+        const p = particles[k];
+        p.x += p.speedX;
+        p.y += p.speedY;
+        p.life--;
+        
+        const alpha = p.life / p.maxLife;
+        
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * alpha, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(30, 110, 243, " + alpha + ")";
+        ctx.fill();
+      }
+      
+      particleAnimationId = requestAnimationFrame(animateParticles);
+    }
+    
+    // Start animation
+    resizeCanvas();
+    canvas._resizeHandler = resizeCanvas;
+    window.addEventListener("resize", resizeCanvas, { passive: true });
+    animateParticles();
+    
+    // Create particles on mousemove
+    window.addEventListener("mousemove", (e) => {
+      if (!effectsEnabled) return;
+      if (Math.random() < 0.3) {
+        createParticle(e.clientX, e.clientY, (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2);
+      }
+    }, { passive: true });
+  }
+
+  function destroyParticles() {
+    if (particleAnimationId) {
+      cancelAnimationFrame(particleAnimationId);
+      particleAnimationId = null;
+    }
+    if (ctx && canvas) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    particles = [];
+    if (canvas) {
+      const resizeHandler = canvas._resizeHandler;
+      if (resizeHandler) {
+        window.removeEventListener("resize", resizeHandler);
+        canvas._resizeHandler = null;
+      }
+    }
+    // Don't nullify canvas and ctx, just reset particles
+    // canvas and ctx are reused when re-enabling effects
+  }
+
+  /* ============================================================
+     FX Toggle Handler
+     ============================================================ */
+
+  function initFXToggle() {
+    const toggleBtn = document.getElementById("effectToggleBatwing");
+    if (!toggleBtn) return;
+    
+    effectsEnabled = true; // starts enabled
+    
+    toggleBtn.addEventListener("click", () => {
+      effectsEnabled = !effectsEnabled;
+      toggleBtn.classList.toggle("active", effectsEnabled);
+      document.body.classList.toggle("effects-on", effectsEnabled);
+      
+      // Re-apply preferences (will restart/stop effects as needed)
+      applyPrefs();
+    });
+  }
+
   function teardownDeck() {
     if (!document.body.classList.contains("gsap-deck")) return;
     document.body.classList.remove("gsap-deck");
@@ -603,6 +748,7 @@
       destroyLenis();
       teardownDeck();
       destroyCursor();
+      destroyParticles();
       return;
     }
     
@@ -615,6 +761,13 @@
     // Cursor e magnetic solo su fine pointer
     initCursor();
     initMagnetic();
+    
+    // Particle trail - respects both motionOK and effectsEnabled
+    if (effectsEnabled) {
+      initParticles();
+    } else {
+      destroyParticles();
+    }
   }
 
   // Listener per cambi di preferenze
@@ -641,6 +794,7 @@
      Boot
      ============================================================ */
 
+  initFXToggle();
   applyPrefs();
   initHero();
   initListLines();
