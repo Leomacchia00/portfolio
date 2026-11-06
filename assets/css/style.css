@@ -3103,23 +3103,31 @@ body.gsap-deck .proj-content { will-change: transform; }
   
   .curved-flow {
     position: absolute;
-    top: 0;
+    top: 20%;
     left: 0;
     width: 100%;
-    height: 300vh;
+    height: 200vh;
     z-index: 1;
     pointer-events: none;
     overflow: hidden;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  
+  .proj-batwing .curved-flow {
+    top: 20%;
+    height: 200vh;
   }
   
   .flow-image-wrap {
     position: absolute;
     will-change: transform;
     transform-origin: center center;
-    transition: transform 0.1s ease-out;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(30, 110, 243, 0.15);
     border-radius: var(--radius);
     overflow: hidden;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
   }
   
   .flow-image-wrap img {
@@ -3127,8 +3135,80 @@ body.gsap-deck .proj-content { will-change: transform; }
     height: auto;
     display: block;
     max-height: 40vh;
+    max-width: 45vw;
     object-fit: contain;
     filter: brightness(1.1) contrast(1.05);
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+  
+  /* Curved flow container for Bat-wing section */
+  .proj-batwing {
+    position: relative;
+    background: linear-gradient(180deg, var(--bg) 0%, #0a0a0f 50%, var(--bg) 100%);
+    overflow: hidden;
+  }
+  
+  /* Scroll hint for Bat-wing section */
+  .proj-batwing .scroll-hint {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    position: absolute;
+    bottom: var(--s-5);
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--muted);
+    font-size: var(--fs-small);
+    animation: bounce 2s ease-in-out infinite;
+    z-index: 10;
+    pointer-events: none;
+  }
+  
+  .proj-batwing .scroll-hint svg {
+    color: var(--accent);
+  }
+  
+  /* Background layers for Bat-wing depth effect */
+  .batwing-bg-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+  }
+  
+  .batwing-bg-layer-1 {
+    background: linear-gradient(135deg, rgba(30, 110, 243, 0.08) 0%, transparent 70%);
+    animation: floatLayer1 30s ease-in-out infinite;
+  }
+  
+  .batwing-bg-layer-2 {
+    background: linear-gradient(-135deg, rgba(30, 110, 243, 0.05) 0%, transparent 70%);
+    animation: floatLayer2 40s ease-in-out infinite;
+  }
+  
+  .batwing-bg-layer-3 {
+    background: radial-gradient(ellipse at 50% 30%, rgba(30, 110, 243, 0.12) 0%, transparent 50%);
+    animation: floatLayer3 50s ease-in-out infinite;
+  }
+  
+  @keyframes floatLayer1 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(5%, 5%) rotate(0.5deg); }
+    50% { transform: translate(-5%, 5%) rotate(-0.5deg); }
+    75% { transform: translate(0, -5%) rotate(0deg); }
+  }
+  
+  @keyframes floatLayer2 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(-8%, -3%) rotate(-1deg); }
+    66% { transform: translate(8%, 3%) rotate(1deg); }
+  }
+  
+  @keyframes floatLayer3 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.12; }
+    50% { transform: translate(0, 10%) rotate(0deg); opacity: 0.08; }
   }
   
   /* Bat-wing Background Layers for Depth */
@@ -3274,6 +3354,7 @@ body.gsap-deck .proj-content { will-change: transform; }
   
   .flow-image-wrap img {
     max-height: 35vh;
+    max-width: 40vw;
   }
   
   .batwing-bg-layer-1,
@@ -3290,6 +3371,14 @@ body.gsap-deck .proj-content { will-change: transform; }
   .scroll-hint {
     bottom: var(--s-4);
     font-size: var(--fs-tiny);
+  }
+  
+  .effect-toggle-batwing {
+    bottom: var(--s-3);
+    right: var(--s-2);
+    width: 48px;
+    height: 48px;
+    font-size: 1rem;
   }
 }
 
@@ -3312,10 +3401,168 @@ body.gsap-deck .proj-content { will-change: transform; }
     max-width: 250px;
   }
   
+  .flow-image-wrap img {
+    max-width: 50vw;
+  }
+  
   .effect-toggle-batwing {
     bottom: var(--s-2);
     right: var(--s-2);
-    padding: var(--s-1) var(--s-2);
+    width: 44px;
+    height: 44px;
     font-size: var(--fs-micro);
+    padding: 8px;
   }
+  
+  .scroll-hint {
+    font-size: var(--fs-micro);
+    gap: var(--s-1);
+  }
+}
+
+/* ============================================================
+   FINAL OVERRIDES - Assicurano che gli stili corretti prevalgano
+   ============================================================ */
+
+/* Curved Flow - Definizione finale */
+.curved-flow {
+  position: absolute;
+  top: 20%;
+  left: 0;
+  width: 100%;
+  height: 200vh;
+  z-index: 1;
+  pointer-events: none !important;
+  overflow: hidden !important;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.proj-batwing .curved-flow {
+  top: 20%;
+  height: 200vh;
+}
+
+/* Flow Image Wrap - Definizione finale */
+.flow-image-wrap {
+  position: absolute;
+  will-change: transform, opacity, scale;
+  transform-origin: center center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(30, 110, 243, 0.15);
+  border-radius: var(--radius);
+  overflow: hidden;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.flow-image-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 40vh;
+  max-width: 45vw;
+  object-fit: contain;
+  filter: brightness(1.1) contrast(1.05);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Background Layers - Definizione finale */
+.batwing-bg-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.batwing-bg-layer-1 {
+  background: linear-gradient(135deg, rgba(30, 110, 243, 0.08) 0%, transparent 70%);
+  animation: floatLayer1 30s ease-in-out infinite;
+}
+
+.batwing-bg-layer-2 {
+  background: linear-gradient(-135deg, rgba(30, 110, 243, 0.05) 0%, transparent 70%);
+  animation: floatLayer2 40s ease-in-out infinite;
+}
+
+.batwing-bg-layer-3 {
+  background: radial-gradient(ellipse at 50% 30%, rgba(30, 110, 243, 0.12) 0%, transparent 50%);
+  animation: floatLayer3 50s ease-in-out infinite;
+}
+
+/* Effects Toggle - Definizione finale */
+.effect-toggle-batwing {
+  position: fixed;
+  bottom: var(--s-3);
+  right: var(--s-3);
+  z-index: 1000;
+  padding: var(--s-1-5) var(--s-3);
+  background: rgba(30, 110, 243, 0.15);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  color: var(--accent);
+  font-family: var(--sans);
+  font-size: var(--fs-tiny);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all var(--dur) var(--ease-out);
+  backdrop-filter: blur(10px);
+}
+
+.effect-toggle-batwing:hover {
+  background: var(--accent);
+  color: var(--bg);
+  transform: scale(1.1);
+}
+
+.effect-toggle-batwing.active {
+  background: var(--accent);
+  color: var(--bg);
+  box-shadow: 0 0 20px rgba(30, 110, 243, 0.3);
+}
+
+/* Scroll Hint for Bat-wing - Definizione finale */
+.proj-batwing .scroll-hint {
+  display: flex !important;
+  align-items: center;
+  gap: var(--s-2);
+  position: absolute;
+  bottom: var(--s-5);
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--muted);
+  font-size: var(--fs-small);
+  animation: bounce 2s ease-in-out infinite;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.proj-batwing .scroll-hint svg {
+  color: var(--accent);
+}
+
+/* Animations - Definizione finale */
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-10px); }
+}
+
+@keyframes floatLayer1 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(5%, 5%) rotate(0.5deg); }
+  50% { transform: translate(-5%, 5%) rotate(-0.5deg); }
+  75% { transform: translate(0, -5%) rotate(0deg); }
+}
+
+@keyframes floatLayer2 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(-8%, -3%) rotate(-1deg); }
+  66% { transform: translate(8%, 3%) rotate(1deg); }
+}
+
+@keyframes floatLayer3 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.12; }
+  50% { transform: translate(0, 10%) rotate(0deg); opacity: 0.08; }
 }
