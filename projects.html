@@ -15,6 +15,35 @@
 <script src="assets/vendor/lenis.min.js" defer></script>
 <script src="assets/js/main.js" defer></script>
 <script src="assets/js/motion.js" defer></script>
+
+
+<style>
+.proj-batwing .batwing-wrapper { position: relative; padding: 48px 0 96px; min-height: 100vh; }
+.proj-batwing .proj-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; inset: -10% 0; }
+.proj-batwing .proj-bg img { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 100%; height: 100%; object-fit: cover; opacity: 0.3; filter: blur(2px); }
+.proj-batwing .proj-bg::before { content: ""\; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at center, rgba(30,110,243,0.08) 0%, transparent 70%); }
+.proj-batwing .proj-content { position: relative; z-index: 1; }
+.proj-batwing .proj-gallery-horiz { position: relative; height: 80vh; min-height: 600px; max-height: 800px; margin: 48px 0 96px; overflow: hidden; }
+.proj-batwing .gallery-track-horiz { position: absolute; top: 50%; left: 0; transform: translateY(-50%); display: flex; gap: 48px; padding: 0 48px; height: 70%; max-height: 500px; will-change: transform; }
+.proj-batwing .gallery-track-horiz .shot { position: relative; flex: 0 0 auto; width: 400px; height: 100%; cursor: pointer; background: #141414; border: 1px solid #232323; border-radius: 12px; overflow: hidden; transition: all 400ms ease; }
+.proj-batwing .gallery-track-horiz .shot:hover { box-shadow: 0 20px 40px rgba(30,110,243,0.15); z-index: 10; }
+.proj-batwing .gallery-track-horiz .shot img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 400ms ease; will-change: transform; }
+.proj-batwing .gallery-track-horiz .shot.active { transform: scale(1.1); z-index: 20; box-shadow: 0 30px 60px rgba(30,110,243,0.25); }
+.proj-batwing .scroll-hint-horiz { position: absolute; bottom: 48px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; color: #A0A0A0; font-size: 0.85rem; animation: bounce 2s infinite; }
+@keyframes bounce { 0%,100% {transform: translateX(-50%) translateY(0);} 50% {transform: translateX(-50%) translateY(10px);} }
+#particle-trail-batwing { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; opacity: 0.6; }
+.cursor-on .cursor-dot,.cursor-on .cursor-ring { position: fixed; pointer-events: none; z-index: 9998; border-radius: 50%; }
+.cursor-on .cursor-dot { width: 8px; height: 8px; background: #1E6EF3; transform: translate(-50%,-50%); }
+.cursor-on .cursor-ring { width: 40px; height: 40px; border: 2px solid #1E6EF3; transform: translate(-50%,-50%); transition: all 220ms ease; }
+.cursor-on .cursor-ring.hover { scale: 1.7; border-color: #B0C4FF; }
+.cursor-on .cursor-dot.hover { scale: 0.5; background: #B0C4FF; }
+.effect-toggle-batwing { position: fixed; bottom: 48px; right: 48px; background: #1E6EF3; border: none; border-radius: 50%; width: 56px; height: 56px; color: #000; cursor: pointer; z-index: 1000; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; transition: all 220ms ease; box-shadow: 0 10px 30px rgba(30,110,243,0.3); }
+.effect-toggle-batwing:hover { transform: scale(1.1); box-shadow: 0 15px 40px rgba(30,110,243,0.4); }
+.effect-toggle-batwing.active { background: #1652CC; }
+@media (max-width: 768px) { .proj-batwing .gallery-track-horiz .shot { width: 250px; } .effect-toggle-batwing { bottom: 48px; right: 16px; width: 48px; height: 48px; font-size: 1rem; } }
+@media (max-width: 480px) { .proj-batwing .gallery-track-horiz .shot { width: 200px; } }
+</style>
+
 </head>
 <body>
 <a class="skip" href="#contenuto">Skip to content</a>
@@ -153,92 +182,47 @@
 </section>
 
 <!-- ============================================================
-     Progetto 04: Bat-wing — CURVED FLOW SHOWCASE
-     Layout: curved image flow with centered images, description, gallery
+     Progetto 04: Bat-wing — Full-bleed con descrizione ampliata
+     Layout: immagine full-bleed, testo ricco, galleria estesa
+     ============================================================ -->
+<!-- ============================================================
+     Progetto 04: Bat-wing — HORIZONTAL SCROLL GALLERY
      ============================================================ -->
 <section class="proj proj-batwing" id="bat-wing">
-  <!-- Background Layers for Depth Effect -->
-  <div class="batwing-bg-layer batwing-bg-layer-1" aria-hidden="true"></div>
-  <div class="batwing-bg-layer batwing-bg-layer-2" aria-hidden="true"></div>
-  <div class="batwing-bg-layer batwing-bg-layer-3" aria-hidden="true"></div>
-  
-  <!-- Curved Flow Container -->
-  <div class="curved-flow" id="curvedFlow" aria-label="Bat-wing project images curved flow"></div>
-  
-  <!-- Project Content -->
-  <div class="proj-content container">
-    <span class="proj-index reveal">04</span>
-    <h2 class="proj-title reveal">Bat-wing</h2>
-    <p class="proj-kicker reveal">Impact-Transforming Saddle</p>
-    <p class="proj-sub reveal">Laboratorio di Progettazione 3 · Bachelor's Thesis</p>
-    
-    <div class="proj-desc-expand">
-      <p class="reveal"><strong>Problem:</strong> E-bike users face micro-impacts, limited range, and poor posture.</p>
-      <p class="reveal"><strong>Solution:</strong> Adaptive saddle with split wing design, integrated shock absorbers, and kinetic energy recovery.</p>
-      <p class="reveal"><strong>Result:</strong> 70% vibration reduction, 10% battery extension, automatic position adaptation.</p>
-    </div>
-    
-    <aside class="proj-meta reveal" aria-label="Project metadata">
-      <div class="meta-item">
-        <span class="meta-label">Year</span>
-        <span class="meta-value">2024</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">Role</span>
-        <span class="meta-value">Concept, 3D Modeling, Prototyping, Research</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">Tools</span>
-        <span class="meta-value">Fusion 360, Rhinoceros, 3D Printing</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">Target</span>
-        <span class="meta-value">E-bike & micromobility users</span>
-      </div>
-    </aside>
-    
-    <!-- Horizontal Gallery as Fallback for Mobile -->
-    <div class="proj-gallery-horiz">
-      <div class="gallery-track-horiz">
-        <button class="shot" type="button" data-caption="Bat-wing — technical view" aria-label="Open image full size: Bat-wing technical view">
-          <img src="assets/img/bat-wing/p22-03.jpg" width="865" height="764" alt="Bat-wing — technical view" loading="lazy">
-        </button>
-        <button class="shot" type="button" data-caption="Bat-wing — main render" aria-label="Open image full size: Bat-wing main render">
-          <img src="assets/img/bat-wing/9.png" width="4096" height="4096" alt="Bat-wing — main render" loading="lazy">
-        </button>
-        <button class="shot" type="button" data-caption="Bat-wing — 3/4 view" aria-label="Open image full size: Bat-wing 3/4 view">
-          <img src="assets/img/bat-wing/8.png" width="4096" height="4096" alt="Bat-wing — 3/4 view" loading="lazy">
-        </button>
-        <button class="shot" type="button" data-caption="Bat-wing — exploded view" aria-label="Open image full size: Bat-wing exploded view">
-          <img src="assets/img/bat-wing/7.png" width="4096" height="4096" alt="Bat-wing — exploded view" loading="lazy">
-        </button>
-        <button class="shot" type="button" data-caption="Bat-wing — on e-bike" aria-label="Open image full size: Bat-wing on e-bike">
-          <img src="assets/img/bat-wing/6.png" width="4096" height="4096" alt="Bat-wing — on e-bike" loading="lazy">
-        </button>
-        <button class="shot" type="button" data-caption="Bat-wing — final render" aria-label="Open image full size: Bat-wing final render">
-          <img src="assets/img/bat-wing/Rendering Finale 1.PNG" width="1920" height="1920" alt="Bat-wing — final render" loading="lazy">
-        </button>
-        <button class="shot" type="button" data-caption="Bat-wing — prototype testing" aria-label="Open image full size: Bat-wing prototype testing">
-          <img src="assets/img/bat-wing/p21-01.jpg" width="1170" height="1772" alt="Bat-wing — prototype testing" loading="lazy">
-        </button>
-        <button class="shot" type="button" data-caption="Bat-wing — technical detail" aria-label="Open image full size: Bat-wing technical detail">
-          <img src="assets/img/bat-wing/p22-01.jpg" width="537" height="948" alt="Bat-wing — technical detail" loading="lazy">
-        </button>
-      </div>
-      <div class="scroll-hint-horiz" aria-hidden="true">
-        <span>Scroll horizontally</span>
-        <svg class="od-icon" style="--od-icon-size:1.25em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M13 6l6 6-6 6"/>
-        </svg>
-      </div>
-    </div>
+  <div class="proj-bg" data-speed="0.22" aria-hidden="true">
+    <img src="assets/img/bat-wing/p22-03.jpg" width="865" height="764" alt="Bat-wing impact-transforming saddle" loading="lazy">
   </div>
-  
-  <div class="scroll-hint" aria-hidden="true">
-    <span>Keep scrolling</span>
-    <svg class="od-icon" style="--od-icon-size:1.25em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M7 13l3 3 7-7"/>
-    </svg>
+  <div class="batwing-wrapper">
+    <div class="proj-content container">
+      <span class="proj-index reveal">04</span>
+      <h2 class="proj-title reveal">Bat-wing</h2>
+      <p class="proj-kicker reveal">Impact-Transforming Saddle</p>
+      <p class="proj-sub reveal">Laboratorio di Progettazione 3 · Bachelor's Thesis</p>
+      <div class="proj-desc-expand">
+        <p class="reveal"><strong>Problem:</strong> E-bike users face micro-impacts, limited range, and poor posture.</p>
+        <p class="reveal"><strong>Solution:</strong> Adaptive saddle with split wing design, integrated shock absorbers, and kinetic energy recovery.</p>
+        <p class="reveal"><strong>Result:</strong> 70% vibration reduction, 10% battery extension, automatic position adaptation.</p>
+      </div>
+      <aside class="proj-meta reveal" aria-label="Project metadata">
+        <div class="meta-item"><span class="meta-label">Year</span><span class="meta-value">2024</span></div>
+        <div class="meta-item"><span class="meta-label">Role</span><span class="meta-value">Concept, 3D Modeling, Prototyping, Research</span></div>
+        <div class="meta-item"><span class="meta-label">Tools</span><span class="meta-value">Fusion 360, Rhinoceros, 3D Printing</span></div>
+        <div class="meta-item"><span class="meta-label">Target</span><span class="meta-value">E-bike & micromobility users</span></div>
+      </aside>
+      <div class="proj-gallery-horiz">
+        <div class="gallery-track-horiz">
+          <button class="shot" type="button" data-caption="Bat-wing — technical view" aria-label="Open image full size: Bat-wing technical view"><img src="assets/img/bat-wing/p22-03.jpg" width="865" height="764" alt="Bat-wing — technical view" loading="lazy"></button>
+          <button class="shot" type="button" data-caption="Bat-wing — main render" aria-label="Open image full size: Bat-wing main render"><img src="assets/img/bat-wing/9.png" width="4096" height="4096" alt="Bat-wing — main render" loading="lazy"></button>
+          <button class="shot" type="button" data-caption="Bat-wing — 3/4 view" aria-label="Open image full size: Bat-wing 3/4 view"><img src="assets/img/bat-wing/8.png" width="4096" height="4096" alt="Bat-wing — 3/4 view" loading="lazy"></button>
+          <button class="shot" type="button" data-caption="Bat-wing — exploded view" aria-label="Open image full size: Bat-wing exploded view"><img src="assets/img/bat-wing/7.png" width="4096" height="4096" alt="Bat-wing — exploded view" loading="lazy"></button>
+          <button class="shot" type="button" data-caption="Bat-wing — on e-bike" aria-label="Open image full size: Bat-wing on e-bike"><img src="assets/img/bat-wing/6.png" width="4096" height="4096" alt="Bat-wing — on e-bike" loading="lazy"></button>
+          <button class="shot" type="button" data-caption="Bat-wing — final render" aria-label="Open image full size: Bat-wing final render"><img src="assets/img/bat-wing/Rendering Finale 1.PNG" width="1920" height="1920" alt="Bat-wing — final render" loading="lazy"></button>
+          <button class="shot" type="button" data-caption="Bat-wing — prototype testing" aria-label="Open image full size: Bat-wing prototype testing"><img src="assets/img/bat-wing/p21-01.jpg" width="1170" height="1772" alt="Bat-wing — prototype testing" loading="lazy"></button>
+          <button class="shot" type="button" data-caption="Bat-wing — technical detail" aria-label="Open image full size: Bat-wing technical detail"><img src="assets/img/bat-wing/p22-01.jpg" width="537" height="948" alt="Bat-wing — technical detail" loading="lazy"></button>
+        </div>
+        <div class="scroll-hint-horiz" aria-hidden="true"><span>Scroll horizontally</span><svg class="od-icon" style="--od-icon-size:1.25em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 6l6 6-6 6"/></svg></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -300,782 +284,19 @@
 
 
 <script>
-(function() {
-  // ============================================
-  // Configuration & State
-  // ============================================
-  var hasGSAP = typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined";
-  var hasLenis = typeof Lenis !== "undefined";
-  var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  var hoverFine = window.matchMedia("(hover: hover) and (pointer: fine)");
-  var motionAllowed = !reducedMotion.matches;
-  var effectsEnabled = true;
-  var effectToggle = document.getElementById("effectToggleBatwing");
-  
-  // ============================================
-  // Utility: Debounce function
-  // ============================================
-  function debounce(func, wait) {
-    var timeout;
-    return function executedFunction() {
-      var later = function() {
-        timeout = null;
-        func();
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
-  }
-
-  // ============================================
-  // Effects Toggle
-  // ============================================
-  if (effectToggle) {
-    effectToggle.addEventListener("click", function() {
-      effectsEnabled = !effectsEnabled;
-      effectToggle.classList.toggle("active", effectsEnabled);
-      document.body.classList.toggle("effects-on", effectsEnabled);
-      
-      // Update curved flow state
-      if (typeof window.batwingCurvedFlow !== "undefined") {
-        window.batwingCurvedFlow.setEnabled(effectsEnabled);
-      }
-      
-      // Update particles
-      if (typeof window.stopParticles === "function") {
-        if (effectsEnabled) {
-          window.startParticles();
-        } else {
-          window.stopParticles();
-        }
-      }
-    });
-  }
-
-  // ============================================
-  // Lenis Smooth Scrolling
-  // ============================================
-  if (motionAllowed && hasLenis && typeof Lenis !== "undefined") {
-    try {
-      var lenis = new Lenis({duration: 1.2, smoothWheel: true, autoResize: true});
-      lenis.on("scroll", function() {
-        if (typeof ScrollTrigger !== "undefined") ScrollTrigger.update();
-      });
-      
-      if (typeof gsap !== "undefined") {
-        gsap.ticker.add(function(t) {
-          if (lenis) lenis.raf(t * 1000);
-        });
-      }
-      
-      var lightbox = document.getElementById("lightbox");
-      if (lightbox && lenis) {
-        new MutationObserver(function() {
-          if (!lenis) return;
-          lightbox.open ? lenis.stop() : lenis.start();
-        }).observe(lightbox, {attributes: true, attributeFilter: ["open"]});
-      }
-      document.documentElement.classList.add("lenis");
-    } catch(e) {
-      console.warn("Lenis initialization failed:", e);
-    }
-  }
-
-  // ============================================
-  // Custom Cursor
-  // ============================================
-  if (hoverFine.matches && motionAllowed && hasGSAP) {
-    var cursorDot = document.querySelector(".cursor-dot");
-    var cursorRing = document.querySelector(".cursor-ring");
-    if (cursorDot && cursorRing) {
-      document.documentElement.classList.add("cursor-on");
-      gsap.set([cursorDot, cursorRing], {
-        xPercent: -50,
-        yPercent: -50,
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2,
-        opacity: effectsEnabled ? 1 : 0
-      });
-      
-      var dotX = gsap.quickTo(cursorDot, "x", {duration: 0.1, ease: "power3.out"});
-      var dotY = gsap.quickTo(cursorDot, "y", {duration: 0.1, ease: "power3.out"});
-      var ringX = gsap.quickTo(cursorRing, "x", {duration: 0.5, ease: "power3.out"});
-      var ringY = gsap.quickTo(cursorRing, "y", {duration: 0.5, ease: "power3.out"});
-      
-      window.addEventListener("pointermove", function(e) {
-        if (!motionAllowed || !effectsEnabled) {
-          gsap.set([cursorDot, cursorRing], {opacity: 0});
-          return;
-        }
-        dotX(e.clientX);
-        dotY(e.clientY);
-        ringX(e.clientX);
-        ringY(e.clientY);
-        gsap.set([cursorDot, cursorRing], {opacity: 1});
-        
-        var target = e.target.closest(".shot, button, a, .effect-toggle-batwing");
-        gsap.to(cursorRing, {
-          scale: target ? 1.7 : 1,
-          duration: 0.35,
-          ease: "power3.out",
-          overwrite: "auto"
-        });
-        gsap.to(cursorDot, {
-          scale: target ? 0.5 : 1,
-          duration: 0.35,
-          ease: "power3.out",
-          overwrite: "auto"
-        });
-      }, {passive: true});
-      
-      document.documentElement.addEventListener("pointerleave", function() {
-        gsap.set([cursorDot, cursorRing], {opacity: 0});
-      });
-      
-      window.addEventListener("pointerdown", function() {
-        if (motionAllowed && effectsEnabled && cursorRing) {
-          gsap.to(cursorRing, {
-            scale: 0.75,
-            duration: 0.2,
-            ease: "power2.out",
-            overwrite: "auto"
-          });
-        }
-      });
-    }
-  }
-
-  // ============================================
-  // Particle Trail Effect
-  // ============================================
-  var canvas, ctx, particles = [];
-  var particleAnimationId = null;
-  
-  window.startParticles = function() {
-    if (!motionAllowed || !effectsEnabled || !canvas) return;
-    if (particleAnimationId) return;
-    animateParticles();
-  };
-  
-  window.stopParticles = function() {
-    if (particleAnimationId) {
-      cancelAnimationFrame(particleAnimationId);
-      particleAnimationId = null;
-    }
-    if (ctx && canvas) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-    particles = [];
-  };
-  
-  if (motionAllowed && effectsEnabled) {
-    canvas = document.getElementById("particle-trail-batwing");
-    if (canvas) {
-      ctx = canvas.getContext("2d");
-      
-      function resizeCanvas() {
-        if (!canvas) return;
-        var dpr = window.devicePixelRatio || 1;
-        canvas.width = window.innerWidth * dpr;
-        canvas.height = window.innerHeight * dpr;
-        canvas.style.width = window.innerWidth + "px";
-        canvas.style.height = window.innerHeight + "px";
-        ctx.scale(dpr, dpr);
-      }
-      
-      function createParticle(x, y, speedX, speedY) {
-        particles.push({
-          x: x,
-          y: y,
-          size: Math.random() * 2 + 1,
-          speedX: speedX || (Math.random() - 0.5) * 1.5,
-          speedY: speedY || (Math.random() - 0.5) * 1.5,
-          life: 100,
-          maxLife: 100,
-          color: "rgba(30, 110, 243, " + (Math.random() * 0.5 + 0.3) + ")"
-        });
-        if (particles.length > 30) {
-          particles.shift();
-        }
-      }
-      
-      function animateParticles() {
-        if (!effectsEnabled || !canvas || !ctx) {
-          particleAnimationId = null;
-          return;
-        }
-        
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Remove dead particles
-        particles = particles.filter(function(p) { return p.life > 0; });
-        
-        // Draw connections between particles
-        for (var i = 0; i < particles.length; i++) {
-          for (var j = i + 1; j < particles.length; j++) {
-            var p1 = particles[i];
-            var p2 = particles[j];
-            var dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
-            if (dist < 100) {
-              ctx.beginPath();
-              ctx.moveTo(p1.x, p1.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.strokeStyle = "rgba(30, 110, 243, " + (0.2 * (1 - dist / 100)) + ")";
-              ctx.lineWidth = 1;
-              ctx.stroke();
-            }
-          }
-        }
-        
-        // Draw and update particles
-        for (var k = 0; k < particles.length; k++) {
-          var p = particles[k];
-          p.x += p.speedX;
-          p.y += p.speedY;
-          p.life--;
-          
-          // Fade out based on life
-          var alpha = p.life / p.maxLife;
-          var fillColor = p.color.replace(/[\d.]+)/, function(match) {
-            return Math.min(1, parseFloat(match) * alpha);
-          });
-          
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * alpha, 0, Math.PI * 2);
-          ctx.fillStyle = fillColor;
-          ctx.fill();
-        }
-        
-        particleAnimationId = requestAnimationFrame(animateParticles);
-      }
-      
-      var mousemoveHandler = debounce(function(e) {
-        if (!effectsEnabled || !canvas) return;
-        if (Math.random() < 0.3) {
-          createParticle(e.clientX, e.clientY, (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2);
-        }
-      }, 16);
-      
-      window.addEventListener("mousemove", mousemoveHandler, {passive: true});
-      window.addEventListener("resize", debounce(resizeCanvas, 100), {passive: true});
-      resizeCanvas();
-      
-      if (effectsEnabled) {
-        animateParticles();
-      }
-    }
-  }
-
-  // ============================================
-  // CURVED FLOW ANIMATION FOR BAT-WING (FIXED)
-  // ============================================
-  window.batwingCurvedFlow = (function() {
-    var curvedFlow, flowImages = [], flowAnimations = [];
-    var centerX, centerY, radius;
-    var animationRunning = false;
-    var animationId = null;
-    
-    function init() {
-      curvedFlow = document.getElementById("curvedFlow");
-      if (!curvedFlow || !hasGSAP || !motionAllowed) return;
-      
-      // Bat-wing image data
-      var batwingImages = [
-        { src: "assets/img/bat-wing/p22-03.jpg", w: 865, h: 764, alt: "Bat-wing technical view" },
-        { src: "assets/img/bat-wing/9.png", w: 4096, h: 4096, alt: "Bat-wing main render" },
-        { src: "assets/img/bat-wing/8.png", w: 4096, h: 4096, alt: "Bat-wing 3/4 view" },
-        { src: "assets/img/bat-wing/7.png", w: 4096, h: 4096, alt: "Bat-wing exploded view" },
-        { src: "assets/img/bat-wing/6.png", w: 4096, h: 4096, alt: "Bat-wing on e-bike" },
-        { src: "assets/img/bat-wing/Rendering Finale 1.PNG", w: 1920, h: 1920, alt: "Bat-wing final render" },
-        { src: "assets/img/bat-wing/p21-01.jpg", w: 1170, h: 1772, alt: "Bat-wing prototype testing" },
-        { src: "assets/img/bat-wing/p22-01.jpg", w: 537, h: 948, alt: "Bat-wing technical detail" }
-      ];
-      
-      // Create image elements
-      batwingImages.forEach(function(imgData) {
-        var imgWrap = document.createElement("div");
-        imgWrap.className = "flow-image-wrap";
-        
-        var img = document.createElement("img");
-        img.src = imgData.src;
-        img.width = imgData.w;
-        img.height = imgData.h;
-        img.alt = imgData.alt;
-        img.loading = "lazy";
-        img.decode = function() {
-          // Wait for image to decode
-          return new Promise(function(resolve) {
-            if (img.complete) {
-              resolve();
-            } else {
-              img.addEventListener("load", resolve);
-              img.addEventListener("error", resolve);
-            }
-          });
-        };
-        
-        imgWrap.appendChild(img);
-        curvedFlow.appendChild(imgWrap);
-      });
-      
-      flowImages = Array.from(curvedFlow.querySelectorAll(".flow-image-wrap"));
-      
-      // Wait for all images to load
-      var imagesLoaded = 0;
-      var allImages = Array.from(curvedFlow.querySelectorAll("img"));
-      
-      if (allImages.length === 0) return;
-      
-      allImages.forEach(function(img) {
-        if (img.complete) {
-          imagesLoaded++;
-        } else {
-          img.addEventListener("load", function() {
-            imagesLoaded++;
-            if (imagesLoaded === allImages.length) {
-              positionImages();
-              startAnimation();
-            }
-          });
-          img.addEventListener("error", function() {
-            imagesLoaded++;
-            if (imagesLoaded === allImages.length) {
-              positionImages();
-              startAnimation();
-            }
-          });
-        }
-      });
-      
-      if (imagesLoaded === allImages.length) {
-        positionImages();
-        startAnimation();
-      }
-    }
-    
-    function calculatePosition(angle, index) {
-      var angleStep = (2 * Math.PI) / flowImages.length;
-      var actualAngle = angle;
-      var x = centerX + Math.cos(actualAngle) * radius;
-      var y = centerY + Math.sin(actualAngle) * radius * 0.6;
-      
-      // Calculate scale based on depth
-      var depth = Math.sin(actualAngle + Math.PI/2);
-      var scale = 0.4 + Math.abs(depth) * 0.3;
-      
-      return {
-        x: x,
-        y: y,
-        scale: scale,
-        zIndex: Math.floor(scale * 100)
-      };
-    }
-    
-    function positionImages() {
-      if (!curvedFlow || flowImages.length === 0) return;
-      
-      centerX = window.innerWidth / 2;
-      centerY = window.innerHeight / 2;
-      radius = Math.min(window.innerWidth * 0.4, window.innerHeight * 0.4);
-      
-      flowImages.forEach(function(el, i) {
-        var angle = i * (2 * Math.PI) / flowImages.length;
-        var pos = calculatePosition(angle, i);
-        
-        gsap.set(el, {
-          x: pos.x - el.offsetWidth / 2,
-          y: pos.y - el.offsetHeight / 2,
-          scale: pos.scale,
-          zIndex: pos.zIndex,
-          transformOrigin: "center center"
-        });
-      });
-    }
-    
-    function startAnimation() {
-      if (!effectsEnabled || !curvedFlow || flowImages.length === 0) return;
-      if (animationRunning) return;
-      
-      animationRunning = true;
-      var startTime = null;
-      var duration = 20; // seconds for full rotation
-      
-      function animate(timestamp) {
-        if (!animationRunning || !effectsEnabled) {
-          animationRunning = false;
-          return;
-        }
-        
-        if (!startTime) startTime = timestamp;
-        var elapsed = (timestamp - startTime) / 1000; // in seconds
-        var progress = (elapsed % duration) / duration;
-        
-        flowImages.forEach(function(el, i) {
-          var angleStep = (2 * Math.PI) / flowImages.length;
-          var startAngle = i * angleStep;
-          var currentAngle = startAngle - (2 * Math.PI) * progress;
-          
-          var pos = calculatePosition(currentAngle, i);
-          
-          gsap.set(el, {
-            x: pos.x - el.offsetWidth / 2,
-            y: pos.y - el.offsetHeight / 2,
-            scale: pos.scale,
-            zIndex: pos.zIndex
-          });
-        });
-        
-        animationId = requestAnimationFrame(animate);
-      }
-      
-      // Start animation
-      animationId = requestAnimationFrame(animate);
-      
-      // Set up ScrollTrigger
-      if (typeof ScrollTrigger !== "undefined") {
-        ScrollTrigger.create({
-          trigger: "#bat-wing",
-          start: "top bottom",
-          end: "bottom top",
-          onEnter: function() {
-            if (effectsEnabled && !animationRunning) {
-              animationRunning = true;
-              animationId = requestAnimationFrame(animate);
-            }
-          },
-          onEnterBack: function() {
-            if (effectsEnabled && !animationRunning) {
-              animationRunning = true;
-              animationId = requestAnimationFrame(animate);
-            }
-          },
-          onLeave: function() {
-            if (animationRunning) {
-              animationRunning = false;
-              if (animationId) {
-                cancelAnimationFrame(animationId);
-                animationId = null;
-              }
-            }
-          },
-          onLeaveBack: function() {
-            if (animationRunning) {
-              animationRunning = false;
-              if (animationId) {
-                cancelAnimationFrame(animationId);
-                animationId = null;
-              }
-            }
-          }
-        });
-      }
-    }
-    
-    function stopAnimation() {
-      animationRunning = false;
-      if (animationId) {
-        cancelAnimationFrame(animationId);
-        animationId = null;
-      }
-    }
-    
-    function setEnabled(enabled) {
-      effectsEnabled = enabled;
-      if (enabled) {
-        positionImages();
-        startAnimation();
-      } else {
-        stopAnimation();
-      }
-    }
-    
-    // Initialize
-    init();
-    
-    // Handle resize with debounce
-    var handleResize = debounce(function() {
-      positionImages();
-    }, 100);
-    
-    window.addEventListener("resize", handleResize, {passive: true});
-    
-    return {
-      setEnabled: setEnabled,
-      positionImages: positionImages,
-      startAnimation: startAnimation,
-      stopAnimation: stopAnimation
-    };
-  })();
-
-  // ============================================
-  // Horizontal Gallery Scroll
-  // ============================================
-  if (hasGSAP && motionAllowed) {
-    var galleryHoriz = document.querySelector(".proj-gallery-horiz");
-    var galleryTrack = document.querySelector(".gallery-track-horiz");
-    
-    if (galleryHoriz && galleryTrack) {
-      var galleryItems = Array.from(galleryTrack.children);
-      
-      // Wait for images to load before calculating width
-      var galleryImages = Array.from(galleryTrack.querySelectorAll("img"));
-      var galleryLoaded = 0;
-      
-      function initGallery() {
-        galleryLoaded++;
-        if (galleryLoaded < galleryImages.length) return;
-        
-        var totalWidth = galleryItems.reduce(function(sum, el) {
-          return sum + el.offsetWidth + (parseFloat(getComputedStyle(el).marginRight) || 0);
-        }, 0);
-        
-        gsap.to(galleryTrack, {
-          x: function() { return -(totalWidth - window.innerWidth * 0.8); },
-          ease: "none",
-          scrollTrigger: {
-            trigger: galleryHoriz,
-            pin: false,
-            scrub: 1,
-            snap: {
-              snapTo: galleryItems.map(function(_, i) { return i / (galleryItems.length - 1); }),
-              duration: 0.3,
-              delay: 0
-            },
-            end: function() { return "+=" + (totalWidth - window.innerWidth * 0.7); },
-            invalidateOnRefresh: true
-          }
-        });
-        
-        galleryItems.forEach(function(item) {
-          ScrollTrigger.create({
-            trigger: item,
-            start: "left center",
-            end: "right center",
-            onToggle: function(self) {
-              item.classList.toggle("active", self.isActive);
-            }
-          });
-        });
-      }
-      
-      if (galleryImages.length === 0) {
-        initGallery();
-      } else {
-        galleryImages.forEach(function(img) {
-          if (img.complete) {
-            galleryLoaded++;
-          } else {
-            img.addEventListener("load", initGallery);
-            img.addEventListener("error", initGallery);
-          }
-        });
-        if (galleryLoaded === galleryImages.length) {
-          initGallery();
-        }
-      }
-    }
-  }
-
-  // ============================================
-  // 3D Tilt Effects for Gallery Images
-  // ============================================
-  if (hoverFine.matches && motionAllowed && hasGSAP) {
-    // Tilt effect for horizontal gallery
-    document.querySelectorAll(".proj-batwing .gallery-track-horiz .shot").forEach(function(el) {
-      var img = el.querySelector("img");
-      if (!img) return;
-      
-      // Use debounce for mousemove
-      var tiltHandler = debounce(function(e) {
-        if (!motionAllowed || !effectsEnabled) return;
-        var rect = el.getBoundingClientRect();
-        var relX = (e.clientX - rect.left) / rect.width * 2 - 1;
-        var relY = (e.clientY - rect.top) / rect.height * 2 - 1;
-        
-        gsap.to(img, {
-          rotateX: relY * 15,
-          rotateY: relX * 15,
-          duration: 0.4,
-          ease: "power2.out",
-          overwrite: "auto"
-        });
-      }, 16);
-      
-      el.addEventListener("mousemove", tiltHandler, {passive: true});
-      
-      el.addEventListener("mouseleave", function() {
-        if (!motionAllowed || !effectsEnabled) return;
-        gsap.to(img, {
-          rotateX: 0,
-          rotateY: 0,
-          duration: 0.8,
-          ease: "elastic.out(1,0.3)",
-          overwrite: "auto"
-        });
-      });
-    });
-    
-    // Magnetic effect for gallery items
-    document.querySelectorAll(".proj-batwing .gallery-track-horiz .shot").forEach(function(el) {
-      var elX = gsap.quickTo(el, "x", {duration: 0.35, ease: "power3.out"});
-      var elY = gsap.quickTo(el, "y", {duration: 0.35, ease: "power3.out"});
-      
-      var magneticHandler = debounce(function(e) {
-        if (!motionAllowed || !effectsEnabled) return;
-        var rect = el.getBoundingClientRect();
-        var centerX = rect.left + rect.width / 2;
-        var centerY = rect.top + rect.height / 2;
-        var dist = Math.hypot(e.clientX - centerX, e.clientY - centerY);
-        var pull = Math.max(0, 1 - dist / 200) * 40;
-        
-        elX((e.clientX - centerX) * pull * 0.01);
-        elY((e.clientY - centerY) * pull * 0.01);
-      }, 16);
-      
-      el.addEventListener("pointermove", magneticHandler, {passive: true});
-      
-      el.addEventListener("pointerleave", function() {
-        if (!motionAllowed || !effectsEnabled) return;
-        gsap.to(el, {
-          x: 0,
-          y: 0,
-          duration: 1,
-          ease: "elastic.out(1, 0.5)",
-          overwrite: "auto"
-        });
-      });
-    });
-  }
-
-  // ============================================
-  // Reveal Animations
-  // ============================================
-  if (hasGSAP && motionAllowed) {
-    document.querySelectorAll(".proj-batwing .reveal").forEach(function(el, i) {
-      gsap.fromTo(el, {
-        opacity: 0,
-        y: 40
-      }, {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        delay: i * 0.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 80%",
-          end: "top 20%",
-          toggleActions: "play none none reverse"
-        }
-      });
-    });
-  }
-
-  // ============================================
-  // Lightbox Functionality
-  // ============================================
-  if (hasGSAP) {
-    var lightbox = document.getElementById("lightbox");
-    var lbImg = lightbox?.querySelector(".lb-img");
-    var lbCaption = lightbox?.querySelector(".lb-cap");
-    var lbCount = lightbox?.querySelector(".lb-count");
-    var lbClose = lightbox?.querySelector(".lb-close");
-    var lbPrev = lightbox?.querySelector(".lb-prev");
-    var lbNext = lightbox?.querySelector(".lb-next");
-    var lbShots = document.querySelectorAll(".proj-batwing .gallery-track-horiz .shot");
-    
-    if (lightbox && lbImg && lbShots.length > 0) {
-      var currentIndex = 0;
-      var lbItems = Array.from(lbShots).map(function(shot) {
-        var img = shot.querySelector("img");
-        return {
-          src: img?.src || "",
-          alt: img?.alt || "",
-          caption: shot.dataset.caption || ""
-        };
-      });
-      
-      function updateLightbox() {
-        var item = lbItems[currentIndex];
-        lbImg.src = item.src;
-        lbImg.alt = item.alt;
-        lbCaption.textContent = item.caption;
-        lbCount.textContent = (currentIndex + 1) + "/" + lbItems.length;
-      }
-      
-      function prevImage() {
-        currentIndex = (currentIndex - 1 + lbItems.length) % lbItems.length;
-        updateLightbox();
-      }
-      
-      function nextImage() {
-        currentIndex = (currentIndex + 1) % lbItems.length;
-        updateLightbox();
-      }
-      
-      lbShots.forEach(function(shot, i) {
-        shot.addEventListener("click", function() {
-          currentIndex = i;
-          updateLightbox();
-          lightbox.showModal();
-          document.body.style.overflow = "hidden";
-        });
-      });
-      
-      lbClose?.addEventListener("click", function() {
-        lightbox.close();
-        document.body.style.overflow = "";
-      });
-      
-      lbPrev?.addEventListener("click", prevImage);
-      lbNext?.addEventListener("click", nextImage);
-      
-      lightbox.addEventListener("keydown", function(e) {
-        if (e.key === "Escape") {
-          lightbox.close();
-          document.body.style.overflow = "";
-        } else if (e.key === "ArrowLeft") {
-          e.preventDefault();
-          prevImage();
-        } else if (e.key === "ArrowRight") {
-          e.preventDefault();
-          nextImage();
-        }
-      });
-      
-      lightbox.addEventListener("click", function(e) {
-        if (e.target === lightbox) {
-          lightbox.close();
-          document.body.style.overflow = "";
-        }
-      });
-    }
-  }
-
-  // ============================================
-  // Progress Bar
-  // ============================================
-  var progressBar = document.getElementById("progress");
-  if (progressBar && hasGSAP && typeof ScrollTrigger !== "undefined") {
-    ScrollTrigger.create({
-      start: "top top",
-      end: "bottom bottom",
-      onUpdate: function(self) {
-        progressBar.style.transform = "scaleX(" + self.progress + ")";
-      }
-    });
-  }
-
-  // ============================================
-  // Reload on reduced motion change
-  // ============================================
-  if (reducedMotion.addEventListener) {
-    reducedMotion.addEventListener("change", function() {
-      motionAllowed = !reducedMotion.matches;
-      location.reload();
-    });
-  }
-})();
+(function(){
+var h=typeof gsap!="undefined"&&typeof ScrollTrigger!="undefined",l=typeof Lenis!="undefined",r=window.matchMedia("(prefers-reduced-motion: reduce)"),f=window.matchMedia("(hover: hover) and (pointer: fine)"),m=!r.matches,e=true,t=document.getElementById("effectToggleBatwing");
+if(t)t.addEventListener("click",function(){e=!e;t.classList.toggle("active",e);document.body.classList.toggle("effects-on",e)});
+if(m&&l){var n=new Lenis({duration:1.2,smoothWheel:!0});n.on("scroll",ScrollTrigger.update);gsap.ticker.add(function(t){n.raf(t*1e3)});var o=document.getElementById("lightbox");if(o)new MutationObserver(function(){if(!n)return;o.open?n.stop():n.start()}).observe(o,{attributes:!0,attributeFilter:["open"]});document.documentElement.classList.add("lenis")}
+if(f.matches&&m){var d=document.querySelector(".cursor-dot"),g=document.querySelector(".cursor-ring");if(d&&g){document.documentElement.classList.add("cursor-on");gsap.set([d,g],{xPercent:-50,yPercent:-50,x:window.innerWidth/2,y:window.innerHeight/2,opacity:1});var x=gsap.quickTo(d,"x",{duration:.1,ease:"power3.out"}),y=gsap.quickTo(d,"y",{duration:.1,ease:"power3.out"}),R=gsap.quickTo(g,"x",{duration:.5,ease:"power3.out"}),T=gsap.quickTo(g,"y",{duration:.5,ease:"power3.out"});window.addEventListener("pointermove",function(t){if(!m||!e)return;x(t.clientX);y(t.clientY);R(t.clientX);T(t.clientY);gsap.set([d,g],{opacity:1});var n=t.target.closest(".shot, button, a");gsap.to(g,{scale:n?1.7:1,duration:.35,ease:"power3.out",overwrite:"auto"});gsap.to(d,{scale:n?.5:1,duration:.35,ease:"power3.out",overwrite:"auto"})},{passive:!0});document.documentElement.addEventListener("pointerleave",function(){gsap.set([d,g],{opacity:0})});window.addEventListener("pointerdown",function(){if(m&&e)gsap.to(g,{scale:.75,duration:.2,ease:"power2.out",overwrite:"auto"})})}}
+var c,a=[];if(m){c=document.getElementById("particle-trail-batwing");if(c){a=c.getContext("2d");function i(){c.width=window.innerWidth;c.height=window.innerHeight}function s(t,n,r,i){a.push({x:t,y:n,size:Math.random()*2+1,speedX:r||(Math.random()-.5)*1.5,speedY:i||(Math.random()-.5)*1.5,life:100,color:"rgba(30, 110, 243, "+(Math.random()*.5+.3)+")"});if(a.length>30)a.shift()}function o(){if(!e){a=[];a.clearRect(0,0,c.width,c.height);requestAnimationFrame(o);return}a.clearRect(0,0,c.width,c.height);for(var t=0;t<a.length;t++)for(var n=t+1;n<a.length;n++){var r=a[t],i=a[n],s=Math.hypot(r.x-i.x,r.y-i.y);if(s<100){a.beginPath();a.moveTo(r.x,r.y);a.lineTo(i.x,i.y);a.strokeStyle="rgba(30, 110, 243, "+(.2*(1-s/100))+")";a.stroke()}}a.forEach(function(t){t.x+=t.speedX;t.y+=t.speedY;t.life--;a.beginPath();a.arc(t.x,t.y,t.size,0,Math.PI*2);a.fillStyle=t.color;a.fill()});requestAnimationFrame(o)}window.addEventListener("mousemove",function(t){if(!e)return;if(Math.random()<.3)s(t.clientX,t.clientY,(Math.random()-.5)*2,(Math.random()-.5)*2)});window.addEventListener("resize",i);i();o()}}
+if(h&&m){var p=document.querySelector(".proj-gallery-horiz"),u=document.querySelector(".gallery-track-horiz");if(p&&u){var v=Array.from(u.children),w=v.reduce(function(t,n){return t+n.offsetWidth+parseFloat(getComputedStyle(n).marginRight)||0},0);gsap.to(u,{x:function(){return-(w-window.innerWidth*.8)},ease:"none",scrollTrigger:{trigger:p,pin:!0,scrub:1,snap:{snapTo:v.map(function(_,t){return t/(v.length-1)}),duration:.3,delay:0},end:function(){return"+="+(w-window.innerWidth*.7)},invalidateOnRefresh:!0}});v.forEach(function(t){ScrollTrigger.create({trigger:t,start:"left center",end:"right center",onToggle:function(t){return t.classList.toggle("active",t.isActive)}})})}
+if(f.matches){document.querySelectorAll(".proj-batwing .gallery-track-horiz .shot").forEach(function(t){var n=t.querySelector("img");if(!n)return;t.addEventListener("mousemove",function(e){if(!m||!e)return;var r=t.getBoundingClientRect(),i=(e.clientX-r.left)/r.width*2-1,o=(e.clientY-r.top)/r.height*2-1;gsap.to(n,{rotateX:o*15,rotateY:i*15,duration:.4,ease:"power2.out"})});t.addEventListener("mouseleave",function(){if(!m)return;gsap.to(n,{rotateX:0,rotateY:0,duration:.8,ease:"elastic.out(1,0.3)"})})});document.querySelectorAll(".proj-batwing .gallery-track-horiz .shot").forEach(function(t){var n=gsap.quickTo(t,"x",{duration:.35,ease:"power3.out"}),r=gsap.quickTo(t,"y",{duration:.35,ease:"power3.out"});t.addEventListener("pointermove",function(e){if(!m||!e)return;var i=t.getBoundingClientRect(),s=i.left+i.width/2,o=i.top+i.height/2,d=Math.hypot(e.clientX-s,e.clientY-o),p=Math.max(0,1-d/200)*40;n((e.clientX-s)*p*.01);r((e.clientY-o)*p*.01)});t.addEventListener("pointerleave",function(){if(!m)return;gsap.to(t,{x:0,y:0,duration:1,ease:"elastic.out(1,0.5)",overwrite:"auto"})})})}}
+document.querySelectorAll(".proj-batwing .reveal").forEach(function(t,n){gsap.fromTo(t,{opacity:0,y:40},{opacity:1,y:0,duration:1,delay:n*.1,ease:"power3.out",scrollTrigger:{trigger:t,start:"top 80%",end:"top 20%",toggleActions:"play none none reverse"}})})}var b=document.getElementById("lightbox"),S=document.querySelectorAll(".proj-batwing .gallery-track-horiz .shot"),L=b?.querySelector(".lb-img"),C=b?.querySelector(".lb-cap"),A=b?.querySelector(".lb-count"),k=b?.querySelector(".lb-close"),M=b?.querySelector(".lb-prev"),N=b?.querySelector(".lb-next");
+if(b&&L&&S.length){var q=0,O=Array.from(S).map(function(t){return{src:t.querySelector("img")?.src||"",alt:t.querySelector("img")?.alt||"",caption:t.dataset.caption||""}});function P(t){q=t;U();b.showModal();document.body.style.overflow="hidden"}function U(){var t=O[q];L.src=t.src;L.alt=t.alt;C.textContent=t.caption;A.textContent=(q+1)+"/"+O.length}function V(){q=(q-1+O.length)%O.length;U()}function W(){q=(q+1)%O.length;U()}S.forEach(function(t,n){t.addEventListener("click",function(){P(n)})});k?.addEventListener("click",function(){b.close();document.body.style.overflow=""});M?.addEventListener("click",V);N?.addEventListener("click",W);b.addEventListener("keydown",function(t){if(t.key==="Escape")b.close(),document.body.style.overflow="";if(t.key==="ArrowLeft")V();if(t.key==="ArrowRight")W()});b.addEventListener("click",function(t){if(t.target===b)b.close(),document.body.style.overflow=""})}
+var E=document.getElementById("progress");if(E)ScrollTrigger.create({start:"top top",end:"bottom bottom",onUpdate:function(t){E.style.scaleX=t.progress}});
+window.addEventListener("load",function(){if(h)ScrollTrigger.refresh()});
+if(r.addEventListener)r.addEventListener("change",function(){m=!r.matches;location.reload()})})();
 </script>
 
 </body>
