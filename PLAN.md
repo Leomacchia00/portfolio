@@ -39,7 +39,7 @@ This document tracks the development plan, current status, and roadmap for Leona
    - [x] SHOCK! project section
    - [x] ELIO project section
    - [x] Silky Skin project section
-   - [x] Bat-wing project section with curved flow animation
+   - [x] Bat-wing project section (horizontal scroll gallery + 3D effects)
    - [x] Image galleries with lightbox
    - [x] Project descriptions
    - [x] Project metadata
@@ -54,14 +54,13 @@ This document tracks the development plan, current status, and roadmap for Leona
    - [x] parallax-scrolling-effects - Advanced parallax effects
    - [x] portfolio-site-qa - Comprehensive QA and validation
 
-6. **Bat-wing Curved Flow** (NEWLY IMPLEMENTED)
-   - [x] Curved flow animation with GSAP motionPath
-   - [x] Images centered vertically in viewport
-   - [x] Background layers for depth effect
-   - [x] Pause on section leave/enter
-   - [x] Effects toggle button
-   - [x] Responsive design for mobile/tablet
-   - [x] Fallback horizontal gallery for touch devices
+### Decision — Bat-wing layout
+
+The curved-flow experiment (orbiting images, autonomous loop) was implemented,
+rejected and rolled back (commits 203c334/3264f3e reverted in d599904).
+The approved layout for Bat-wing is the **horizontal scroll gallery**
+with 3D tilt, magnetic cursor and particle trail (commit 412db12).
+Do NOT re-implement the curved flow unless the user explicitly re-opens the idea.
 
 ### In Progress 🚧
 
@@ -84,7 +83,7 @@ This document tracks the development plan, current status, and roadmap for Leona
 
 1. **Motion Design Enhancements** (Inspired by reference sites)
    - **From Macmillan Studio:**
-     - [ ] Implement curved flow with better image positioning
+     - ~~Implement curved flow~~ (rejected — see Decision above)
      - [ ] Add multi-layer parallax effects
      - [ ] Implement smooth scroll-triggered animations
      - [ ] Add depth to project sections
@@ -169,7 +168,7 @@ This document tracks the development plan, current status, and roadmap for Leona
 - Responsive design with mobile optimizations
 
 **Portfolio Adaptation:**
-- Adapt curved flow for Bat-wing project
+- ~~Adapt curved flow for Bat-wing project~~ (rejected — see Decision above)
 - Implement multi-layer parallax for hero sections
 - Use smooth scroll-triggered animations
 
@@ -269,19 +268,11 @@ This document tracks the development plan, current status, and roadmap for Leona
 ### Phase 1: Core Improvements (Current Focus)
 **Timeline: Week 1-2**
 
-1. **Implement Curved Flow for Bat-wing** (HIGHEST PRIORITY)
-   - Integrate curved flow from test file to main projects.html
-   - Center images vertically in viewport
-   - Fine-tune animation parameters
-   - Optimize performance
-   - Test on all devices
+1. **Bat-wing layout confirmed**
+   - Keep the horizontal scroll gallery layout (commit 412db12)
+   - Curved flow rejected — do not revisit unless the user asks
 
-2. **Clean up and remove test files**
-   - Remove batwing-test-v2.html
-   - Remove other test files
-   - Ensure all changes are in main files
-
-3. **Basic Performance Optimization**
+2. **Basic Performance Optimization**
    - Compress images
    - Add lazy loading
    - Minify CSS/JS
@@ -428,12 +419,10 @@ project-root/
 
 ### Immediate (Today)
 1. ✅ Created new skills library
-2. ✅ Integrated curved flow animation into projects.html
-3. ✅ Centered images vertically in curved flow
-4. ✅ Added background depth layers
-5. ✅ Implemented effects toggle
-6. ⏳ Test curved flow animation on all devices
-7. ⏳ Verify no regressions in existing functionality
+2. ✅ Curved flow implemented, then rejected and rolled back (d599904)
+3. ✅ Bat-wing back on the approved horizontal-gallery layout
+4. ⏳ Verify the restored site on all devices and browsers
+5. ⏳ Verify no regressions in existing functionality
 
 ### Short-term (This Week)
 1. Implement infinite loop for other project galleries (SHOCK!, ELIO, Silky Skin)
@@ -537,26 +526,16 @@ project-root/
 ## Changelog
 
 ### Latest Changes
-- **2024-XX-XX**: Created new skills library with 8 specialized skills
-- **2024-XX-XX**: Created PLAN.md to track development
-- **2024-XX-XX**: ✅ Implemented curved flow animation directly in projects.html (Bat-wing section)
-  - Added curved flow container with GSAP motionPath animation
-  - Images centered vertically in viewport
-  - Background depth layers with animated gradients
-  - Effects toggle button (FX) for performance control
-  - Responsive design with fallback for mobile
-- **2024-XX-XX**: Updated design system tokens in style.css
-  - Added new accent colors and gradients
-  - Enhanced motion tokens
-  - New utility classes for premium styling
-- **2024-XX-XX**: Enhanced Bat-wing section with:
-  - Curved image flow animation
-  - Depth effect with multiple background layers
-  - Improved responsive behavior
-  - Maintained all existing functionality
+- **d599904**: Rolled back the curved-flow experiment — restored projects.html (303 lines)
+  and style.css (1900 lines) to the approved state of 412db12 (horizontal gallery,
+  3D tilt, magnetic cursor, particle trail). Root causes: duplicated CSS rules,
+  inline script duplicating Lenis/lightbox already in main.js/motion.js, and a
+  concept (orbiting images) that did not match the Macmillan reference.
+- Created new skills library with 8 specialized skills
+- Created PLAN.md to track development
 
 ### Upcoming Changes
-- Test curved flow on all devices and browsers
+- Verify the restored site on all devices and browsers
 - Implement infinite loop animations for other projects
 - Add parallax scrolling effects
 - Optimize images (WebP conversion)
