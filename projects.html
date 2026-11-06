@@ -15,6 +15,35 @@
 <script src="assets/vendor/lenis.min.js" defer></script>
 <script src="assets/js/main.js" defer></script>
 <script src="assets/js/motion.js" defer></script>
+
+
+<style>
+.proj-batwing .batwing-wrapper { position: relative; padding: 48px 0 96px; min-height: 100vh; }
+.proj-batwing .proj-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; inset: -10% 0; }
+.proj-batwing .proj-bg img { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 100%; height: 100%; object-fit: cover; opacity: 0.3; filter: blur(2px); }
+.proj-batwing .proj-bg::before { content: ""\; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at center, rgba(30,110,243,0.08) 0%, transparent 70%); }
+.proj-batwing .proj-content { position: relative; z-index: 1; }
+.proj-batwing .proj-gallery-horiz { position: relative; height: 80vh; min-height: 600px; max-height: 800px; margin: 48px 0 96px; overflow: hidden; }
+.proj-batwing .gallery-track-horiz { position: absolute; top: 50%; left: 0; transform: translateY(-50%); display: flex; gap: 48px; padding: 0 48px; height: 70%; max-height: 500px; will-change: transform; }
+.proj-batwing .gallery-track-horiz .shot { position: relative; flex: 0 0 auto; width: 400px; height: 100%; cursor: pointer; background: #141414; border: 1px solid #232323; border-radius: 12px; overflow: hidden; transition: all 400ms ease; }
+.proj-batwing .gallery-track-horiz .shot:hover { box-shadow: 0 20px 40px rgba(30,110,243,0.15); z-index: 10; }
+.proj-batwing .gallery-track-horiz .shot img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 400ms ease; will-change: transform; }
+.proj-batwing .gallery-track-horiz .shot.active { transform: scale(1.1); z-index: 20; box-shadow: 0 30px 60px rgba(30,110,243,0.25); }
+.proj-batwing .scroll-hint-horiz { position: absolute; bottom: 48px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; color: #A0A0A0; font-size: 0.85rem; animation: bounce 2s infinite; }
+@keyframes bounce { 0%,100% {transform: translateX(-50%) translateY(0);} 50% {transform: translateX(-50%) translateY(10px);} }
+#particle-trail-batwing { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; opacity: 0.6; }
+.cursor-on .cursor-dot,.cursor-on .cursor-ring { position: fixed; pointer-events: none; z-index: 9998; border-radius: 50%; }
+.cursor-on .cursor-dot { width: 8px; height: 8px; background: #1E6EF3; transform: translate(-50%,-50%); }
+.cursor-on .cursor-ring { width: 40px; height: 40px; border: 2px solid #1E6EF3; transform: translate(-50%,-50%); transition: all 220ms ease; }
+.cursor-on .cursor-ring.hover { scale: 1.7; border-color: #B0C4FF; }
+.cursor-on .cursor-dot.hover { scale: 0.5; background: #B0C4FF; }
+.effect-toggle-batwing { position: fixed; bottom: 48px; right: 48px; background: #1E6EF3; border: none; border-radius: 50%; width: 56px; height: 56px; color: #000; cursor: pointer; z-index: 1000; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; transition: all 220ms ease; box-shadow: 0 10px 30px rgba(30,110,243,0.3); }
+.effect-toggle-batwing:hover { transform: scale(1.1); box-shadow: 0 15px 40px rgba(30,110,243,0.4); }
+.effect-toggle-batwing.active { background: #1652CC; }
+@media (max-width: 768px) { .proj-batwing .gallery-track-horiz .shot { width: 250px; } .effect-toggle-batwing { bottom: 48px; right: 16px; width: 48px; height: 48px; font-size: 1rem; } }
+@media (max-width: 480px) { .proj-batwing .gallery-track-horiz .shot { width: 200px; } }
+</style>
+
 </head>
 <body>
 <a class="skip" href="#contenuto">Skip to content</a>
@@ -156,68 +185,43 @@
      Progetto 04: Bat-wing — Full-bleed con descrizione ampliata
      Layout: immagine full-bleed, testo ricco, galleria estesa
      ============================================================ -->
+<!-- ============================================================
+     Progetto 04: Bat-wing — HORIZONTAL SCROLL GALLERY
+     ============================================================ -->
 <section class="proj proj-batwing" id="bat-wing">
   <div class="proj-bg" data-speed="0.22" aria-hidden="true">
     <img src="assets/img/bat-wing/p22-03.jpg" width="865" height="764" alt="Bat-wing impact-transforming saddle" loading="lazy">
   </div>
-  <div class="proj-content container">
-    <span class="proj-index reveal" aria-hidden="true">04</span>
-    <h2 class="proj-title reveal">Bat-wing</h2>
-    <p class="proj-kicker reveal">Impact-Transforming Saddle</p>
-    <p class="proj-sub reveal">Laboratorio di Progettazione 3 · Bachelor's Thesis</p>
-    
-    <div class="proj-desc-expand">
-      <p class="reveal"><strong>Problem:</strong> E-bike and electric micromobility users face three critical issues: micro-impacts from rough roads cause discomfort and instability, limited battery range restricts travel, and poor seating posture leads to ischial inflammation for 85% of casual cyclists.</p>
-      
-      <p class="reveal"><strong>Solution:</strong> An adaptive saddle with a split "wing" design that automatically adjusts to different rider positions. Integrated shock absorbers dampen micro-impacts, while a kinetic energy recovery system transforms oscillation energy into electricity to extend battery life. The design combines ergonomic research with innovative materials for optimal comfort.</p>
-      
-      <p class="reveal"><strong>Result:</strong> 70% reduction in transmitted vibrations, 10% battery range extension through energy recovery, automatic adaptation to various riding positions. Developed under the guidance of Prof. Alessandra Rinaldi with tutors Jonathan Lagrimino and Sara Viviani.</p>
-    </div>
-    
-    <aside class="proj-meta reveal" aria-label="Project metadata">
-      <div class="meta-item">
-        <span class="meta-label">Year</span>
-        <span class="meta-value">2024</span>
+  <div class="batwing-wrapper">
+    <div class="proj-content container">
+      <span class="proj-index reveal">04</span>
+      <h2 class="proj-title reveal">Bat-wing</h2>
+      <p class="proj-kicker reveal">Impact-Transforming Saddle</p>
+      <p class="proj-sub reveal">Laboratorio di Progettazione 3 · Bachelor's Thesis</p>
+      <div class="proj-desc-expand">
+        <p class="reveal"><strong>Problem:</strong> E-bike users face micro-impacts, limited range, and poor posture.</p>
+        <p class="reveal"><strong>Solution:</strong> Adaptive saddle with split wing design, integrated shock absorbers, and kinetic energy recovery.</p>
+        <p class="reveal"><strong>Result:</strong> 70% vibration reduction, 10% battery extension, automatic position adaptation.</p>
       </div>
-      <div class="meta-item">
-        <span class="meta-label">Role</span>
-        <span class="meta-value">Concept, 3D Modeling, Prototyping, Research</span>
+      <aside class="proj-meta reveal" aria-label="Project metadata">
+        <div class="meta-item"><span class="meta-label">Year</span><span class="meta-value">2024</span></div>
+        <div class="meta-item"><span class="meta-label">Role</span><span class="meta-value">Concept, 3D Modeling, Prototyping, Research</span></div>
+        <div class="meta-item"><span class="meta-label">Tools</span><span class="meta-value">Fusion 360, Rhinoceros, 3D Printing</span></div>
+        <div class="meta-item"><span class="meta-label">Target</span><span class="meta-value">E-bike & micromobility users</span></div>
+      </aside>
+      <div class="proj-gallery-horiz">
+        <div class="gallery-track-horiz">
+          <button class="shot" type="button" data-caption="Bat-wing — technical view" aria-label="Open image full size: Bat-wing technical view"><img src="assets/img/bat-wing/p22-03.jpg" width="865" height="764" alt="Bat-wing — technical view" loading="lazy"></button>
+          <button class="shot" type="button" data-caption="Bat-wing — main render" aria-label="Open image full size: Bat-wing main render"><img src="assets/img/bat-wing/9.png" width="4096" height="4096" alt="Bat-wing — main render" loading="lazy"></button>
+          <button class="shot" type="button" data-caption="Bat-wing — 3/4 view" aria-label="Open image full size: Bat-wing 3/4 view"><img src="assets/img/bat-wing/8.png" width="4096" height="4096" alt="Bat-wing — 3/4 view" loading="lazy"></button>
+          <button class="shot" type="button" data-caption="Bat-wing — exploded view" aria-label="Open image full size: Bat-wing exploded view"><img src="assets/img/bat-wing/7.png" width="4096" height="4096" alt="Bat-wing — exploded view" loading="lazy"></button>
+          <button class="shot" type="button" data-caption="Bat-wing — on e-bike" aria-label="Open image full size: Bat-wing on e-bike"><img src="assets/img/bat-wing/6.png" width="4096" height="4096" alt="Bat-wing — on e-bike" loading="lazy"></button>
+          <button class="shot" type="button" data-caption="Bat-wing — final render" aria-label="Open image full size: Bat-wing final render"><img src="assets/img/bat-wing/Rendering Finale 1.PNG" width="1920" height="1920" alt="Bat-wing — final render" loading="lazy"></button>
+          <button class="shot" type="button" data-caption="Bat-wing — prototype testing" aria-label="Open image full size: Bat-wing prototype testing"><img src="assets/img/bat-wing/p21-01.jpg" width="1170" height="1772" alt="Bat-wing — prototype testing" loading="lazy"></button>
+          <button class="shot" type="button" data-caption="Bat-wing — technical detail" aria-label="Open image full size: Bat-wing technical detail"><img src="assets/img/bat-wing/p22-01.jpg" width="537" height="948" alt="Bat-wing — technical detail" loading="lazy"></button>
+        </div>
+        <div class="scroll-hint-horiz" aria-hidden="true"><span>Scroll horizontally</span><svg class="od-icon" style="--od-icon-size:1.25em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 6l6 6-6 6"/></svg></div>
       </div>
-      <div class="meta-item">
-        <span class="meta-label">Tools</span>
-        <span class="meta-value">Fusion 360, Rhinoceros, 3D Printing</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">Target</span>
-        <span class="meta-value">E-bike & micromobility users</span>
-      </div>
-    </aside>
-    
-    <div class="proj-gallery reveal">
-      <button class="shot" type="button" data-caption="Bat-wing — technical view" aria-label="Open image full size: Bat-wing technical view">
-        <img src="assets/img/bat-wing/p22-03.jpg" width="865" height="764" alt="Bat-wing — technical view" loading="lazy">
-      </button>
-      <button class="shot" type="button" data-caption="Bat-wing — render, main view with adaptive wing design" aria-label="Open image full size: Bat-wing main render">
-        <img src="assets/img/bat-wing/9.png" width="4096" height="4096" alt="Bat-wing — main render" loading="lazy">
-      </button>
-      <button class="shot" type="button" data-caption="Bat-wing — render, 3/4 view showing shock absorbers" aria-label="Open image full size: Bat-wing 3/4 view render">
-        <img src="assets/img/bat-wing/8.png" width="4096" height="4096" alt="Bat-wing — 3/4 view render" loading="lazy">
-      </button>
-      <button class="shot" type="button" data-caption="Bat-wing — render, exploded view showing components" aria-label="Open image full size: Bat-wing exploded view">
-        <img src="assets/img/bat-wing/7.png" width="4096" height="4096" alt="Bat-wing — exploded view" loading="lazy">
-      </button>
-      <button class="shot" type="button" data-caption="Bat-wing — render, on e-bike context" aria-label="Open image full size: Bat-wing on e-bike">
-        <img src="assets/img/bat-wing/6.png" width="4096" height="4096" alt="Bat-wing — on e-bike context" loading="lazy">
-      </button>
-      <button class="shot" type="button" data-caption="Bat-wing — final render, clean presentation" aria-label="Open image full size: Bat-wing final render">
-        <img src="assets/img/bat-wing/Rendering Finale 1.PNG" width="1920" height="1920" alt="Bat-wing — final render" loading="lazy">
-      </button>
-      <button class="shot" type="button" data-caption="Bat-wing — prototype testing, phase 1" aria-label="Open image full size: Bat-wing prototype testing">
-        <img src="assets/img/bat-wing/p21-01.jpg" width="1170" height="1772" alt="Bat-wing — prototype testing" loading="lazy">
-      </button>
-      <button class="shot" type="button" data-caption="Bat-wing — technical detail, component view" aria-label="Open image full size: Bat-wing technical detail">
-        <img src="assets/img/bat-wing/p22-01.jpg" width="537" height="948" alt="Bat-wing — technical detail" loading="lazy">
-      </button>
     </div>
   </div>
 </section>
@@ -268,5 +272,32 @@
     </div>
   </figure>
 </dialog>
+
+
+<!-- Particle Trail Canvas -->
+<canvas id="particle-trail-batwing" aria-hidden="true"></canvas>
+<!-- Custom Cursor Elements -->
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+<!-- Effect Toggle Button -->
+<button class="effect-toggle-batwing" id="effectToggleBatwing" type="button" aria-label="Toggle special effects" title="Toggle special effects">FX</button>
+
+
+<script>
+(function(){
+var h=typeof gsap!="undefined"&&typeof ScrollTrigger!="undefined",l=typeof Lenis!="undefined",r=window.matchMedia("(prefers-reduced-motion: reduce)"),f=window.matchMedia("(hover: hover) and (pointer: fine)"),m=!r.matches,e=true,t=document.getElementById("effectToggleBatwing");
+if(t)t.addEventListener("click",function(){e=!e;t.classList.toggle("active",e);document.body.classList.toggle("effects-on",e)});
+if(m&&l){var n=new Lenis({duration:1.2,smoothWheel:!0});n.on("scroll",ScrollTrigger.update);gsap.ticker.add(function(t){n.raf(t*1e3)});var o=document.getElementById("lightbox");if(o)new MutationObserver(function(){if(!n)return;o.open?n.stop():n.start()}).observe(o,{attributes:!0,attributeFilter:["open"]});document.documentElement.classList.add("lenis")}
+if(f.matches&&m){var d=document.querySelector(".cursor-dot"),g=document.querySelector(".cursor-ring");if(d&&g){document.documentElement.classList.add("cursor-on");gsap.set([d,g],{xPercent:-50,yPercent:-50,x:window.innerWidth/2,y:window.innerHeight/2,opacity:1});var x=gsap.quickTo(d,"x",{duration:.1,ease:"power3.out"}),y=gsap.quickTo(d,"y",{duration:.1,ease:"power3.out"}),R=gsap.quickTo(g,"x",{duration:.5,ease:"power3.out"}),T=gsap.quickTo(g,"y",{duration:.5,ease:"power3.out"});window.addEventListener("pointermove",function(t){if(!m||!e)return;x(t.clientX);y(t.clientY);R(t.clientX);T(t.clientY);gsap.set([d,g],{opacity:1});var n=t.target.closest(".shot, button, a");gsap.to(g,{scale:n?1.7:1,duration:.35,ease:"power3.out",overwrite:"auto"});gsap.to(d,{scale:n?.5:1,duration:.35,ease:"power3.out",overwrite:"auto"})},{passive:!0});document.documentElement.addEventListener("pointerleave",function(){gsap.set([d,g],{opacity:0})});window.addEventListener("pointerdown",function(){if(m&&e)gsap.to(g,{scale:.75,duration:.2,ease:"power2.out",overwrite:"auto"})})}}
+var c,a=[];if(m){c=document.getElementById("particle-trail-batwing");if(c){a=c.getContext("2d");function i(){c.width=window.innerWidth;c.height=window.innerHeight}function s(t,n,r,i){a.push({x:t,y:n,size:Math.random()*2+1,speedX:r||(Math.random()-.5)*1.5,speedY:i||(Math.random()-.5)*1.5,life:100,color:"rgba(30, 110, 243, "+(Math.random()*.5+.3)+")"});if(a.length>30)a.shift()}function o(){if(!e){a=[];a.clearRect(0,0,c.width,c.height);requestAnimationFrame(o);return}a.clearRect(0,0,c.width,c.height);for(var t=0;t<a.length;t++)for(var n=t+1;n<a.length;n++){var r=a[t],i=a[n],s=Math.hypot(r.x-i.x,r.y-i.y);if(s<100){a.beginPath();a.moveTo(r.x,r.y);a.lineTo(i.x,i.y);a.strokeStyle="rgba(30, 110, 243, "+(.2*(1-s/100))+")";a.stroke()}}a.forEach(function(t){t.x+=t.speedX;t.y+=t.speedY;t.life--;a.beginPath();a.arc(t.x,t.y,t.size,0,Math.PI*2);a.fillStyle=t.color;a.fill()});requestAnimationFrame(o)}window.addEventListener("mousemove",function(t){if(!e)return;if(Math.random()<.3)s(t.clientX,t.clientY,(Math.random()-.5)*2,(Math.random()-.5)*2)});window.addEventListener("resize",i);i();o()}}
+if(h&&m){var p=document.querySelector(".proj-gallery-horiz"),u=document.querySelector(".gallery-track-horiz");if(p&&u){var v=Array.from(u.children),w=v.reduce(function(t,n){return t+n.offsetWidth+parseFloat(getComputedStyle(n).marginRight)||0},0);gsap.to(u,{x:function(){return-(w-window.innerWidth*.8)},ease:"none",scrollTrigger:{trigger:p,pin:!0,scrub:1,snap:{snapTo:v.map(function(_,t){return t/(v.length-1)}),duration:.3,delay:0},end:function(){return"+="+(w-window.innerWidth*.7)},invalidateOnRefresh:!0}});v.forEach(function(t){ScrollTrigger.create({trigger:t,start:"left center",end:"right center",onToggle:function(t){return t.classList.toggle("active",t.isActive)}})})}
+if(f.matches){document.querySelectorAll(".proj-batwing .gallery-track-horiz .shot").forEach(function(t){var n=t.querySelector("img");if(!n)return;t.addEventListener("mousemove",function(e){if(!m||!e)return;var r=t.getBoundingClientRect(),i=(e.clientX-r.left)/r.width*2-1,o=(e.clientY-r.top)/r.height*2-1;gsap.to(n,{rotateX:o*15,rotateY:i*15,duration:.4,ease:"power2.out"})});t.addEventListener("mouseleave",function(){if(!m)return;gsap.to(n,{rotateX:0,rotateY:0,duration:.8,ease:"elastic.out(1,0.3)"})})});document.querySelectorAll(".proj-batwing .gallery-track-horiz .shot").forEach(function(t){var n=gsap.quickTo(t,"x",{duration:.35,ease:"power3.out"}),r=gsap.quickTo(t,"y",{duration:.35,ease:"power3.out"});t.addEventListener("pointermove",function(e){if(!m||!e)return;var i=t.getBoundingClientRect(),s=i.left+i.width/2,o=i.top+i.height/2,d=Math.hypot(e.clientX-s,e.clientY-o),p=Math.max(0,1-d/200)*40;n((e.clientX-s)*p*.01);r((e.clientY-o)*p*.01)});t.addEventListener("pointerleave",function(){if(!m)return;gsap.to(t,{x:0,y:0,duration:1,ease:"elastic.out(1,0.5)",overwrite:"auto"})})})}}
+document.querySelectorAll(".proj-batwing .reveal").forEach(function(t,n){gsap.fromTo(t,{opacity:0,y:40},{opacity:1,y:0,duration:1,delay:n*.1,ease:"power3.out",scrollTrigger:{trigger:t,start:"top 80%",end:"top 20%",toggleActions:"play none none reverse"}})})}var b=document.getElementById("lightbox"),S=document.querySelectorAll(".proj-batwing .gallery-track-horiz .shot"),L=b?.querySelector(".lb-img"),C=b?.querySelector(".lb-cap"),A=b?.querySelector(".lb-count"),k=b?.querySelector(".lb-close"),M=b?.querySelector(".lb-prev"),N=b?.querySelector(".lb-next");
+if(b&&L&&S.length){var q=0,O=Array.from(S).map(function(t){return{src:t.querySelector("img")?.src||"",alt:t.querySelector("img")?.alt||"",caption:t.dataset.caption||""}});function P(t){q=t;U();b.showModal();document.body.style.overflow="hidden"}function U(){var t=O[q];L.src=t.src;L.alt=t.alt;C.textContent=t.caption;A.textContent=(q+1)+"/"+O.length}function V(){q=(q-1+O.length)%O.length;U()}function W(){q=(q+1)%O.length;U()}S.forEach(function(t,n){t.addEventListener("click",function(){P(n)})});k?.addEventListener("click",function(){b.close();document.body.style.overflow=""});M?.addEventListener("click",V);N?.addEventListener("click",W);b.addEventListener("keydown",function(t){if(t.key==="Escape")b.close(),document.body.style.overflow="";if(t.key==="ArrowLeft")V();if(t.key==="ArrowRight")W()});b.addEventListener("click",function(t){if(t.target===b)b.close(),document.body.style.overflow=""})}
+var E=document.getElementById("progress");if(E)ScrollTrigger.create({start:"top top",end:"bottom bottom",onUpdate:function(t){E.style.scaleX=t.progress}});
+window.addEventListener("load",function(){if(h)ScrollTrigger.refresh()});
+if(r.addEventListener)r.addEventListener("change",function(){m=!r.matches;location.reload()})})();
+</script>
+
 </body>
 </html>

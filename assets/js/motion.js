@@ -309,7 +309,13 @@
       const bgImg = bg ? bg.querySelector("img") : null;
       const title = sec.querySelector(".proj-title");
       const chars = title ? splitProjTitle(title) : [];
-      const bits = sec.querySelectorAll(".proj-index, .proj-sub, .proj-desc, .proj-shots");
+      const isBatwing = sec.classList.contains("proj-batwing");
+      const bits = sec.querySelectorAll(".proj-index, .proj-sub, .proj-desc");
+      
+      // For Bat-wing, handle horizontal gallery separately
+      if (isBatwing) {
+        setupBatwingGallery(sec);
+      }
 
       // 1. Parallax dello sfondo (yPercent: -12 a 12 per effetto più visibile)
       if (bgImg) {
@@ -448,6 +454,117 @@
     });
 
     ScrollTrigger.refresh();
+  }
+
+  /* ============================================================
+     Bat-wing Horizontal Gallery Animation
+     ============================================================ */
+  function setupBatwingGallery(sec) {
+    if (!motionOK || !hasGsap) return;
+    
+    const gallery = sec.querySelector(".proj-gallery-horiz");
+    const track = gallery ? gallery.querySelector(".gallery-track-horiz") : null;
+    const shots = track ? Array.from(track.children) : [];
+    
+    if (!gallery || !track || !shots.length) return;
+    
+    // Calculate total width of all shots
+    const totalWidth = shots.reduce((sum, shot) => {
+      return sum + shot.offsetWidth + (parseFloat(getComputedStyle(shot).marginRight) || 0);
+    }, 0);
+    
+    // Horizontal scroll animation with snap
+    gsap.to(track, {
+      x: () => -(totalWidth - window.innerWidth * 0.8),
+      ease: "none",
+      scrollTrigger: {
+        trigger: gallery,
+        pin: true,
+        scrub: 1,
+        snap: {
+          snapTo: shots.map((_, i) => i / (shots.length - 1)),
+          duration: 0.3,
+          delay: 0
+        },
+        end: () => '+=' + (totalWidth - window.innerWidth * 0.7),
+        invalidateOnRefresh: true
+      }
+    });
+    
+    // Add active class when shot is in center for visual feedback
+    shots.forEach((shot, i) => {
+      ScrollTrigger.create({
+        trigger: shot,
+        start: 'left center',
+        end: 'right center',
+        onToggle: self => {
+          shot.classList.toggle('active', self.isActive);
+        }
+      });
+    });
+    
+    // 3D Tilt effect on hover for Bat-wing shots
+    if (fineMq.matches) {
+      shots.forEach(shot => {
+        const img = shot.querySelector('img');
+        if (!img) return;
+        
+        shot.addEventListener('mousemove', (e) => {
+          if (!motionOK) return;
+          const rect = shot.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width * 2 - 1;
+          const y = (e.clientY - rect.top) / rect.height * 2 - 1;
+          
+          gsap.to(img, {
+            rotateX: y * 15,
+            rotateY: x * 15,
+            duration: 0.4,
+            ease: "power2.out"
+          });
+        });
+        
+        shot.addEventListener('mouseleave', () => {
+          if (!motionOK) return;
+          gsap.to(img, {
+            rotateX: 0,
+            rotateY: 0,
+            duration: 0.8,
+            ease: "elastic.out(1, 0.3)"
+          });
+        });
+      });
+    }
+    
+    // Magnetic effect on hover for Bat-wing shots
+    if (fineMq.matches) {
+      shots.forEach(shot => {
+        const xTo = gsap.quickTo(shot, "x", { duration: 0.35, ease: "power3.out" });
+        const yTo = gsap.quickTo(shot, "y", { duration: 0.35, ease: "power3.out" });
+        
+        shot.addEventListener("pointermove", (e) => {
+          if (!motionOK) return;
+          const rect = shot.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          const dist = Math.hypot(e.clientX - centerX, e.clientY - centerY);
+          
+          const pullFactor = Math.max(0, 1 - dist / 200) * 40;
+          xTo((e.clientX - centerX) * pullFactor * 0.01);
+          yTo((e.clientY - centerY) * pullFactor * 0.01);
+        });
+        
+        shot.addEventListener("pointerleave", () => {
+          if (!motionOK) return;
+          gsap.to(shot, {
+            x: 0,
+            y: 0,
+            duration: 1,
+            ease: "elastic.out(1, 0.5)",
+            overwrite: "auto"
+          });
+        });
+      });
+    }
   }
 
   function teardownDeck() {
