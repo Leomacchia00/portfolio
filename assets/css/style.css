@@ -1686,30 +1686,25 @@ body.gsap-deck .proj-content { will-change: transform; }
   display: block;
 }
 
-/* ---------- Progetto 04: Bat-wing — Full-bleed finale ---------- */
+/* ---------- Progetto 04: Bat-wing — Full-bleed con descrizione ampliata ---------- */
 .proj-batwing {
-  min-height: 100svh;
+  min-height: 120vh;
 }
 .proj-batwing .proj-bg {
   inset: -20% 0;
 }
 .proj-batwing .proj-bg::after {
-  background: linear-gradient(180deg, rgba(6, 7, 12, 0.2) 0%, rgba(6, 7, 12, 0.8) 70%);
+  background: linear-gradient(180deg, rgba(6, 7, 12, 0.4) 0%, rgba(6, 7, 12, 0.9) 70%);
 }
 .proj-batwing .proj-content {
   padding-block: var(--s-7);
   text-align: center;
+  position: relative;
+  z-index: 1;
 }
 .proj-batwing .proj-main {
   max-width: 60ch;
   margin: 0 auto;
-}
-.proj-batwing .proj-shots {
-  justify-content: center;
-  margin-top: var(--s-6);
-}
-.proj-batwing .proj-shots .shot {
-  max-width: min(400px, 80vw);
 }
 
 /* ---------- Responsive: Mobile ---------- */
@@ -1790,25 +1785,6 @@ body.gsap-deck .proj-content { will-change: transform; }
   .proj-silky .proj-horiz > .shot {
     flex: 0 0 min(280px, 85vw);
   }
-}
-
-/* ---------- Progetto 04: Bat-wing — Full-bleed con descrizione ampliata ---------- */
-.proj-batwing {
-  min-height: 120vh;
-}
-.proj-batwing .proj-bg {
-  inset: -20% 0;
-}
-.proj-batwing .proj-bg::after {
-  background: linear-gradient(180deg, rgba(6, 7, 12, 0.2) 0%, rgba(6, 7, 12, 0.8) 70%);
-}
-.proj-batwing .proj-content {
-  padding-block: var(--s-7);
-  text-align: center;
-}
-.proj-batwing .proj-main {
-  max-width: 60ch;
-  margin: 0 auto;
 }
 
 /* Kicker per tutti i progetti */
