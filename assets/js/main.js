@@ -549,7 +549,7 @@
         if (!ev || !rect) return;
         const dx = (ev.clientX - rect.left) / rect.width - 0.5;
         const dy = (ev.clientY - rect.top) / rect.height - 0.5;
-        img.style.transform = "translate3d(" + (dx * -14).toFixed(1) + "px," + (dy * -10).toFixed(1) + "px,0)";
+        img.style.transform = "translate3d(" + (dx * -6).toFixed(1) + "px," + (dy * -4).toFixed(1) + "px,0)";
       };
       scene.addEventListener("pointerenter", measure);
       scene.addEventListener("pointermove", (e) => { ev = e; if (!raf) raf = requestAnimationFrame(apply); }, { passive: true });

@@ -1264,7 +1264,6 @@ html.js .scene {
 }
 /* parallax sul mouse: l'immagine di scena si muove leggermente */
 .scene-parallax .scene-bg img {
-  transition: transform 0.15s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
 }
 .scene:hover .scene-bg img {
