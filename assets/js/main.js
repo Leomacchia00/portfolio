@@ -306,23 +306,29 @@
 
   const startFlight = (plan) => {
     if (!plan) return;
-    const { proxy, panel, scene } = plan;
+    const { proxy, panel, scene, cover } = plan;
     panelFlight = plan;
     // il prodotto originale esce di scena: il proxy prende il suo posto
     if (scene) scene.classList.add("pd-source-hidden");
     gsap.killTweensOf(proxy);
-    // il pannello scivola; il prodotto parte poco dopo e atterra quando
-    // il pannello si assesta (stesso istante, ~0.72s)
+    gsap.set(cover, { opacity: 0 });   // cover nascosta all'inizio, appare durante il volo
+    // zoom della scena: l'immagine di fondo si ingrandisce, dando l'effetto
+    // di uno "zoom dentro il progetto" piuttosto che un pannello che si apre
+    const bgImg = scene ? scene.querySelector(".scene-bg img") : null;
+    if (bgImg) {
+      gsap.to(bgImg, { scale: 1.12, duration: 0.7, ease: "power3.out", overwrite: "auto" });
+    }
+    // il pannello scivola; il prodotto lo raggiunge in volo
     slideInPanel(panel);
     revealPanelContent(panel);
+    // cross-fade: la cover appare mentre il prodotto è ancora in volo,
+    // così non c'è stop brusco quando atterra (nessun "scatto")
+    gsap.to(cover, { opacity: 1, duration: 0.25, delay: 0.15, ease: "power2.out", overwrite: "auto" });
     gsap.to(proxy, {
       x: plan.dx, y: plan.dy, scale: plan.scale,
-      duration: 0.6, delay: 0.12, ease: "power4.out", overwrite: "auto",
+      duration: 0.5, delay: 0.05, ease: "power3.out", overwrite: "auto",
       onComplete: () => {
-        // togliendo pd-flying la cover riappare via transition CSS:
-        // cross-fade morbido proxy (che sfuma) -> cover (che entra)
-        panel.classList.remove("pd-flying");
-        gsap.to(proxy, { opacity: 0, duration: 0.4, ease: "power2.out",
+        gsap.to(proxy, { opacity: 0, duration: 0.2, ease: "power2.out",
           onComplete: () => { proxy.remove(); panelFlight = null; } });
       }
     });
@@ -338,7 +344,6 @@
     // misura PRIMA di aprire: il pannello e' ancora fuori schermo
     // il volo parte solo da un click reale (deep link/popstate: nessun volo)
     const plan = (reduced || !trigger) ? null : planFlight(scene, panel);
-    if (plan) panel.classList.add("pd-flying");   // la cover resta nascosta finche' il prodotto non atterra
     openPanel = panel;
     panelReturnFocus = trigger || null;
     panel.classList.add("open");
@@ -374,6 +379,11 @@
       panelFlight.proxy.remove();
       panelFlight = null;
     }
+    // ripristina zoom scena prima che il prodotto torni visibile
+    document.querySelectorAll(".scene.pd-source-hidden").forEach((s) => {
+      const bgImg = s.querySelector(".scene-bg img");
+      if (bgImg) gsap.to(bgImg, { scale: 1, duration: 0.5, ease: "power3.in", overwrite: "auto" });
+    });
     // il prodotto originale torna in scena (fade via transition CSS
     // di .scene-bg img: riappare mentre il pannello esce)
     document.querySelectorAll(".scene.pd-source-hidden").forEach((s) => s.classList.remove("pd-source-hidden"));
@@ -385,7 +395,7 @@
     panelReturnFocus = null;
 
     const finish = () => {
-      panel.classList.remove("open", "pd-flying");
+      panel.classList.remove("open");
       panel.style.visibility = "";
       lockScroll(false);
     };

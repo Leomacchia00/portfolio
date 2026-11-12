@@ -1882,9 +1882,6 @@ html.js img[data-reveal].is-loaded { opacity: 1; transform: none; filter: blur(0
   backface-visibility: hidden;
 }
 .pd-fly img { position: absolute; max-width: none; height: auto; will-change: transform, opacity; backface-visibility: hidden; }
-/* durante il volo la cover resta nascosta (senza dissolvenza: deve spegnersi
-   subito e riaccendersi quando il prodotto atterra) */
-.project-detail.pd-flying .pd-cover { opacity: 0; transition: none; }
 .pd-head .pd-cover { transition: opacity var(--dur-lg) var(--ease-out); will-change: opacity; }
 
 .pd-close {
