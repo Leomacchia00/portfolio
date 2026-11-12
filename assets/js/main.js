@@ -282,35 +282,49 @@
     return { proxy, cover, panel, scene, dx, dy, scale };
   };
 
+  /* entrata coreografica del pannello: slide + stagger dei testi.
+     Separiamo la slide del contenitore dal volo del prodotto: il pannello
+     parte subito, il prodotto lo raggiunge e atterra sul suo settle. */
+  const slideInPanel = (panel) => {
+    panel.style.visibility = "visible";
+    gsap.killTweensOf(panel);
+    gsap.fromTo(panel,
+      { x: "100%" },
+      { x: "0%", duration: 0.72, ease: "expo.out", overwrite: "auto" }
+    );
+  };
+  const revealPanelContent = (panel) => {
+    if (reduced) return;
+    const items = panel.querySelectorAll(".pd-kicker, .pd-title, .pd-text");
+    if (!items.length) return;
+    gsap.fromTo(items,
+      { y: 16, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.55, ease: "power3.out", stagger: 0.07, delay: 0.35,
+        overwrite: "auto", clearProps: "transform,opacity" }
+    );
+  };
+
   const startFlight = (plan) => {
     if (!plan) return;
-    const { proxy, panel, scene, cover } = plan;
+    const { proxy, panel, scene } = plan;
     panelFlight = plan;
     // il prodotto originale esce di scena: il proxy prende il suo posto
     if (scene) scene.classList.add("pd-source-hidden");
     gsap.killTweensOf(proxy);
-    // anima il volo del proxy + entrata fluida del pannello in parallelo
+    // il pannello scivola; il prodotto parte poco dopo e atterra quando
+    // il pannello si assesta (stesso istante, ~0.72s)
+    slideInPanel(panel);
+    revealPanelContent(panel);
     gsap.to(proxy, {
       x: plan.dx, y: plan.dy, scale: plan.scale,
-      duration: 0.65, ease: "power3.out", overwrite: "auto",
+      duration: 0.6, delay: 0.12, ease: "power4.out", overwrite: "auto",
       onComplete: () => {
+        // togliendo pd-flying la cover riappare via transition CSS:
+        // cross-fade morbido proxy (che sfuma) -> cover (che entra)
         panel.classList.remove("pd-flying");
-        // cover subentra con fade-in morbido
-        if (cover) {
-          gsap.set(cover, { opacity: 0 });
-          gsap.to(cover, { opacity: 1, duration: 0.4, ease: "power2.out", overwrite: "auto" });
-        }
-        gsap.to(proxy, { opacity: 0, duration: 0.3, ease: "power2.out", onComplete: () => { proxy.remove(); panelFlight = null; } });
+        gsap.to(proxy, { opacity: 0, duration: 0.4, ease: "power2.out",
+          onComplete: () => { proxy.remove(); panelFlight = null; } });
       }
-    });
-    // pannello entra leggermente prima che il volo finisca (overlap)
-    panel.style.visibility = "visible";
-    gsap.set(panel, { x: "100%" });
-    gsap.to(panel, {
-      x: 0,
-      duration: 0.75,
-      ease: "power3.out",
-      overwrite: "auto"
     });
   };
 
@@ -343,16 +357,10 @@
     if (history.replaceState) history.pushState({ project: id }, "", "#" + String(id).replace(/^#/, ""));
     if (plan) {
       startFlight(plan);
-    } else {
-      // nessun volo: entra il pannello con animazione fluida
-      panel.style.visibility = "visible";
-      gsap.set(panel, { x: "100%" });
-      gsap.to(panel, {
-        x: 0,
-        duration: 0.75,
-        ease: "power3.out",
-        overwrite: "auto"
-      });
+    } else if (!reduced) {
+      // nessun volo (deep link): stessa slide coreografica, senza prodotto
+      slideInPanel(panel);
+      revealPanelContent(panel);
     }
   };
 
@@ -362,19 +370,33 @@
     openPanel = null;
     // se il prodotto era in volo, cancella il volo e il proxy
     if (panelFlight) {
+      gsap.killTweensOf(panelFlight.proxy);
       panelFlight.proxy.remove();
       panelFlight = null;
     }
-    // il prodotto originale torna in scena
+    // il prodotto originale torna in scena (fade via transition CSS
+    // di .scene-bg img: riappare mentre il pannello esce)
     document.querySelectorAll(".scene.pd-source-hidden").forEach((s) => s.classList.remove("pd-source-hidden"));
-    panel.classList.remove("open", "pd-flying");
     panel.setAttribute("aria-hidden", "true");
     [document.querySelector("main"), document.querySelector(".site-header"), document.querySelector(".site-footer")]
       .forEach((el) => { if (el) el.removeAttribute("inert"); });
-    lockScroll(false);
     if (pushBack && history.replaceState) history.replaceState({}, "", location.pathname + location.search);
     if (panelReturnFocus) panelReturnFocus.focus({ preventScroll: true });
     panelReturnFocus = null;
+
+    const finish = () => {
+      panel.classList.remove("open", "pd-flying");
+      panel.style.visibility = "";
+      lockScroll(false);
+    };
+    if (reduced) { finish(); return; }
+    // uscita coreografica: il pannello scivola via mentre la scena
+    // dietro riprende il prodotto (niente sparizione a scatto)
+    gsap.killTweensOf(panel);
+    gsap.to(panel, {
+      x: "100%", duration: 0.5, ease: "power3.in", overwrite: "auto",
+      onComplete: finish
+    });
   };
 
   document.addEventListener("click", (e) => {
@@ -513,6 +535,34 @@
     });
   }
 
+  /* Parallax del mouse sulle scene: l'immagine di background si muove
+     leggermente nella direzione opposta al cursore, dando profondità. */
+  if (!reduced && finePointer) {
+    document.querySelectorAll(".scene").forEach((scene) => {
+      const img = scene.querySelector(".scene-bg img");
+      if (!img) return;
+      scene.classList.add("scene-parallax");
+      let raf = 0, ev = null, rect = null;
+      const measure = () => { rect = scene.getBoundingClientRect(); };
+      const apply = () => {
+        raf = 0;
+        if (!ev || !rect) return;
+        const dx = (ev.clientX - rect.left) / rect.width - 0.5;
+        const dy = (ev.clientY - rect.top) / rect.height - 0.5;
+        img.style.transform = "translate3d(" + (dx * -14).toFixed(1) + "px," + (dy * -10).toFixed(1) + "px,0)";
+      };
+      scene.addEventListener("pointerenter", measure);
+      scene.addEventListener("pointermove", (e) => { ev = e; if (!raf) raf = requestAnimationFrame(apply); }, { passive: true });
+      scene.addEventListener("pointerleave", () => {
+        if (raf) { cancelAnimationFrame(raf); raf = 0; }
+        ev = null;
+        img.style.transform = "";
+      });
+      window.addEventListener("resize", measure);
+      measure();
+    });
+  }
+
   let lastY = window.scrollY;
   let ticking = false;
   const onFrame = () => {
@@ -543,4 +593,33 @@
   window.addEventListener("resize", () => { measure(); requestFrame(); });
   measure();
   onFrame();
+
+  /* ---------------- Page transitions (fade between pages) ---------------- */
+  const pt = document.createElement("div");
+  pt.className = "page-transition";
+  document.body.appendChild(pt);
+  // fade-in all'apertura della pagina (overlay parte visibile, poi sparisce)
+  requestAnimationFrame(() => {
+    pt.classList.add("is-hidden");
+  });
+
+  // intercetta i click sui link interni (stessa origine, non âncora, non mailto/tel)
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest("a[href]");
+    if (!link) return;
+    const href = link.getAttribute("href");
+    if (!href) return;
+    // escludi âncora, link esterni, mailto, tel, javascript, download
+    if (href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:") ||
+        href.startsWith("javascript:") || link.target === "_blank" || link.download) return;
+    try {
+      const url = new URL(href, location.origin);
+      if (url.origin !== location.origin) return;
+    } catch { return; }
+    // non intercettare i link che aprono i pannello progetto (già gestiti altrove)
+    if (link.classList.contains("open-project")) return;
+    e.preventDefault();
+    pt.classList.remove("is-hidden");
+    setTimeout(() => { location.href = href; }, 450);
+  }, { capture: true });
 })();

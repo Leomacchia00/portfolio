@@ -1262,6 +1262,11 @@ html.js .scene {
   transition: opacity var(--dur-lg) var(--ease-out), filter var(--dur-lg) var(--ease-out);
   will-change: opacity, filter;
 }
+/* parallax sul mouse: l'immagine di scena si muove leggermente */
+.scene-parallax .scene-bg img {
+  transition: transform 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
 .scene:hover .scene-bg img {
   opacity: 0.85;
   filter: drop-shadow(0 32px 80px rgba(0, 0, 0, 0.45));
@@ -1480,6 +1485,8 @@ html:not(.js) .scene { position: relative; inset: auto; opacity: 1; visibility: 
 html:not(.js) .deck-rail { display: none; }
 html:not(.js) .infinite-loop-wrapper { overflow-x: auto; } /* the loop never starts: keep it scrollable */
 html:not(.js) .site-nav { display: block; } /* mobile menu open by default without JS */
+/* senza JS i link .open-project sono anchor: :target mostra il pannello */
+html:not(.js) .project-detail:target { transform: none; visibility: visible; }
 
 /* ============================================================
    11 · LIGHTBOX
@@ -1507,7 +1514,7 @@ html:not(.js) .site-nav { display: block; } /* mobile menu open by default witho
   object-fit: contain;
   border-radius: var(--radius-sm);
   background: var(--bg);
-  transition: opacity var(--dur-md) var(--ease-in-out), transform var(--dur-md) var(--ease-in-out);
+  transition: opacity var(--dur-lg) var(--ease-out), transform var(--dur-lg) var(--ease-out);
   filter: saturate(0.85) contrast(1.02) brightness(0.95);
 }
 .lb-bar { display: flex; align-items: center; gap: var(--s-2); }
@@ -1830,6 +1837,21 @@ html.js img[data-reveal].is-loaded { opacity: 1; transform: none; filter: blur(0
   .nav-toggle svg { transition: none; }
 }
 
+/* Page transition overlay (fade between pages) */
+.page-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--bg);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.45s var(--ease-out), visibility 0.45s var(--ease-out);
+}
+.page-transition.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
 /* — project detail panel (entra da destra, stesso linguaggio wipe) — */
 .project-detail {
   position: fixed;
@@ -1881,6 +1903,7 @@ html.js img[data-reveal].is-loaded { opacity: 1; transform: none; filter: blur(0
   cursor: pointer;
 }
 .pd-close:hover { border-color: var(--accent); }
+.pd-close:active { transform: scale(0.92); }
 .pd-body { max-width: 840px; margin-inline: auto; padding: calc(var(--header-h) + var(--s-4)) clamp(20px, 5vw, 64px) var(--s-6); }
 .pd-kicker { color: var(--link); font-size: var(--fs-kicker); font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; }
 .pd-title { font-family: var(--font-sans); font-size: var(--fs-h1); font-weight: 900; margin-top: var(--s-2); }
@@ -1911,7 +1934,7 @@ html.pd-lock, html.pd-lock body { overflow: hidden; }
   transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
 .open-project:hover { border-color: var(--accent); background: var(--accent-a12); transform: translateX(3px); }
-.open-project:active { transform: translateX(3px) scale(0.97); }
+.open-project:active { transform: translateX(3px) scale(0.94); }
 /* sotto i 900px la CTA resta raggiungibile (il pannello è il contenuto
    più profondo: renderlo irraggiungibile sarebbe una porta chiusa) */
 @media (max-width: 899px) {
