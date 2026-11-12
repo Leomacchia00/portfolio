@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#05060a">
+<title>My projects — Leonardo Macchiarini</title>
+<meta name="description" content="Selected product design projects: SHOCK!, ELIO, Silky Skin, Bat-wing.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070708'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='38' fill='%232D6BFF' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/layout.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<script>document.documentElement.classList.add("js")</script>
+<script src="assets/vendor/gsap.min.js" defer></script>
+<script src="assets/vendor/ScrollTrigger.min.js" defer></script>
+<script src="assets/vendor/lenis.min.js" defer></script>
+<script src="assets/js/main.js" defer></script>
+<script src="assets/js/motion.js" defer></script>
+
+
+</head>
+<body>
+<a class="skip" href="#contenuto">Skip to content</a>
+<div id="progress" aria-hidden="true"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">M</span><span>Leonardo Macchiarini</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu"><svg class="od-icon ic-menu" style="--od-icon-size:1.4em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="od-icon ic-x" style="--od-icon-size:1.4em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+      <ul><li><a href="about.html">01 · About me</a></li><li><a href="cv.html">02 · CV</a></li><li><a href="projects.html" aria-current="page">03 · My projects</a></li><li><a href="contacts.html">04 · Contacts</a></li></ul>
+    </nav>
+  </div>
+</header>
+<main id="contenuto">
+<!-- ============================================================
+     Hero editoriale: big-num + kicker + h1 + indice progetti a righe
+     ============================================================ -->
+<section class="p-hero">
+  <div class="guide-lines" aria-hidden="true"></div>
+  <div class="container">
+    <span class="big-num" aria-hidden="true">03</span>
+    <h1 class="reveal">My projects</h1>
+    <p class="lead reveal">Four products, 2023–2025: a self-damping wheel, a solar folding scooter, a universal epilator and a saddle that absorbs impacts.</p>
+
+    <nav class="p-index" aria-label="Projects index">
+      <a class="p-index-row" href="#shock">
+        <span class="pi-num">01</span>
+        <span class="pi-thumb cutout"><img src="assets/img/thumb/shock.png" width="480" height="480" alt=""></span>
+        <span class="pi-name">SHOCK!</span>
+        <span class="pi-tag">Energy-Harvesting Wheel</span>
+        <span class="pi-arrow" aria-hidden="true"><svg class="od-icon" style="--od-icon-size:1.25em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="p-index-row" href="#elio">
+        <span class="pi-num">02</span>
+        <span class="pi-thumb cutout"><img src="assets/img/thumb/elio.png" width="480" height="480" alt=""></span>
+        <span class="pi-name">ELIO</span>
+        <span class="pi-tag">Solar-Foldable Scooter</span>
+        <span class="pi-arrow" aria-hidden="true"><svg class="od-icon" style="--od-icon-size:1.25em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="p-index-row" href="#silky-skin">
+        <span class="pi-num">03</span>
+        <span class="pi-thumb cutout"><img src="assets/img/thumb/silky-skin.png" width="480" height="480" alt=""></span>
+        <span class="pi-name">Silky Skin</span>
+        <span class="pi-tag">Universal Epilator</span>
+        <span class="pi-arrow" aria-hidden="true"><svg class="od-icon" style="--od-icon-size:1.25em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="p-index-row" href="#bat-wing">
+        <span class="pi-num">04</span>
+        <span class="pi-thumb cutout"><img src="assets/img/thumb/bat-wing.png" width="480" height="480" alt=""></span>
+        <span class="pi-name">Bat-wing</span>
+        <span class="pi-tag">Impact-Transforming Saddle</span>
+        <span class="pi-arrow" aria-hidden="true"><svg class="od-icon" style="--od-icon-size:1.25em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </nav>
+  </div>
+</section>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     Deck-pin: master pin verticale — 4 scene pinnate, rail laterale
+     ============================================================ -->
+<div class="deck-pin">
+  <div class="deck-stage">
+
+    <!-- Scena 01: SHOCK! -->
+    <section class="scene" id="shock" data-project="shock" data-name="SHOCK!" data-index="0">
+      <div class="scene-bg" aria-hidden="true"><div class="bg-tilt"><img class="bg-a" src="assets/img/scene/shock.png" width="2200" height="1944" alt="" data-product="0.2025,0.1011,0.5938,0.7963"></div></div>
+      <div class="scene-content container">
+        <p class="kicker">01 · Bachelor's thesis · 2024</p>
+        <h2 class="scene-title"><span class="t-line">SHOCK!</span></h2>
+        <p class="scene-sub">Energy-Harvesting Wheel</p>
+        <p class="scene-desc">A 3D-printed lattice tire that turns every impact into stored energy. Puncture-proof, more comfortable, and sustainable by design: from concept to a working two-phase prototype.</p>
+        <ul class="scene-meta" aria-label="Project metadata">
+          <li><span class="meta-label">Year</span><span class="meta-value">2024</span></li>
+          <li><span class="meta-label">Role</span><span class="meta-value">Design, Prototyping</span></li>
+          <li><span class="meta-label">Tools</span><span class="meta-value">Fusion 360, 3D Printing</span></li>
+        </ul>
+        <a class="open-project" href="#p-shock" data-project="shock">Open project →</a>
+      </div>
+      <div class="infinite-loop-wrapper">
+        <div class="infinite-loop-gallery">
+          <img src="assets/img/shock/Mockup-2-web.jpg" width="2200" height="1832" alt="SHOCK! mockup" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/shock/Shock.25-web.jpg" width="2200" height="1173" alt="SHOCK! render of the wheel" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/shock/Fase%202.png" width="641" height="682" alt="SHOCK! prototype, phase 2" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/shock/Shock.18-web.jpg" width="2200" height="1944" alt="SHOCK! key visual" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/shock/Mockup-2-web.jpg" width="2200" height="1832" alt="SHOCK! lattice tire detail" loading="lazy" tabindex="0" role="button">
+        </div>
+      </div>
+    </section>
+
+    <!-- Scena 02: ELIO -->
+    <section class="scene" id="elio" data-project="elio" data-name="ELIO" data-index="1">
+      <div class="scene-bg" aria-hidden="true"><div class="bg-tilt"><img class="bg-a" src="assets/img/scene/elio.png" width="1600" height="1600" alt="" loading="lazy" data-product="0.2356,0.1037,0.5294,0.7950"></div></div>
+      <div class="scene-content container">
+        <p class="kicker">02 · 2024–2025 · with Giada Arena</p>
+        <h2 class="scene-title"><span class="t-line">ELIO</span></h2>
+        <p class="scene-sub">Solar-Foldable Scooter</p>
+        <p class="scene-desc">A solar-powered folding scooter for urban micromobility. Flexible panels integrate into the handlebar and the footboard; removable battery, 12 kg, up to 30 km per charge.</p>
+        <ul class="scene-meta" aria-label="Project metadata">
+          <li><span class="meta-label">Year</span><span class="meta-value">2024–2025</span></li>
+          <li><span class="meta-label">Role</span><span class="meta-value">Design, Prototyping</span></li>
+          <li><span class="meta-label">Tools</span><span class="meta-value">Fusion 360, 3D Printing</span></li>
+        </ul>
+        <a class="open-project" href="#p-elio" data-project="elio">Open project →</a>
+      </div>
+      <div class="infinite-loop-wrapper">
+        <div class="infinite-loop-gallery">
+          <img src="assets/img/elio/elio-02-web.jpg" width="1856" height="1856" alt="ELIO — folding the handlebar" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/elio/elio-07-web.jpg" width="2048" height="2048" alt="ELIO — riding through the city" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/elio/elio-08-web.jpg" width="2048" height="2048" alt="ELIO — riding, lifestyle" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/elio/elio-03-web.jpg" width="2048" height="2048" alt="ELIO — folded scooter, full view" loading="lazy" tabindex="0" role="button">
+        </div>
+      </div>
+    </section>
+
+    <!-- Scena 03: Silky Skin -->
+    <section class="scene" id="silky-skin" data-project="silky-skin" data-name="Silky Skin" data-index="2">
+      <div class="scene-bg" aria-hidden="true"><div class="bg-tilt"><img class="bg-a" src="assets/img/scene/silky-skin.png" width="1280" height="1600" alt="" loading="lazy" data-product="0.3398,0.1013,0.3187,0.7969"></div></div>
+      <div class="scene-content container">
+        <p class="kicker">03 · 2023 · Braun</p>
+        <h2 class="scene-title"><span class="t-line">Silky Skin</span></h2>
+        <p class="scene-sub">Universal Epilator</p>
+        <p class="scene-desc">A universal epilator with interchangeable heads, a 360° pivoting head and gel cooling, designed to ease pain and improve everyday comfort.</p>
+        <ul class="scene-meta" aria-label="Project metadata">
+          <li><span class="meta-label">Year</span><span class="meta-value">2023</span></li>
+          <li><span class="meta-label">Role</span><span class="meta-value">Design, Prototyping</span></li>
+          <li><span class="meta-label">Tools</span><span class="meta-value">Fusion 360, 3D Printing</span></li>
+        </ul>
+        <a class="open-project" href="#p-silky-skin" data-project="silky-skin">Open project →</a>
+      </div>
+      <div class="infinite-loop-wrapper">
+        <div class="infinite-loop-gallery">
+          <img src="assets/img/silky-skin/silk-epil-render-web.jpg" width="1440" height="1800" alt="Silky Skin — epilator variant render" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/silky-skin/rasoio-render-web.jpg" width="1440" height="1800" alt="Silky Skin — razor variant render" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/silky-skin/p12-01.jpg" width="520" height="699" alt="Silky Skin in use" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/silky-skin/p13-01.jpg" width="2087" height="1379" alt="Silky Skin — design board" loading="lazy" tabindex="0" role="button">
+        </div>
+      </div>
+    </section>
+
+    <!-- Scena 04: Bat-wing — strip orizzontale dentro la scena -->
+    <section class="scene" id="bat-wing" data-project="bat-wing" data-name="Bat-wing" data-index="3">
+      <div class="scene-bg" aria-hidden="true"><div class="bg-tilt"><img class="bg-a" src="assets/img/scene/bat-wing.png" width="1600" height="1600" alt="" loading="lazy" data-product="0.2444,0.1013,0.5106,0.7963"></div></div>
+      <div class="scene-content container">
+        <p class="kicker">04 · Design Studio 3 · 2025</p>
+        <h2 class="scene-title"><span class="t-line">Bat-wing</span></h2>
+        <p class="scene-sub">Impact-Transforming Saddle</p>
+        <p class="scene-desc">A saddle with moving wing structures that absorb impacts and turn them into smooth motion. Carbon and memory foam cut weight, up to 40% more absorption than a traditional saddle.</p>
+        <ul class="scene-meta" aria-label="Project metadata">
+          <li><span class="meta-label">Year</span><span class="meta-value">2025</span></li>
+          <li><span class="meta-label">Role</span><span class="meta-value">Concept, 3D, Research</span></li>
+          <li><span class="meta-label">Tools</span><span class="meta-value">Fusion 360, Rhino, 3D printing</span></li>
+          <li><span class="meta-label">Audience</span><span class="meta-value">Mountain-bike riders</span></li>
+        </ul>
+        <a class="open-project" href="#p-bat-wing" data-project="bat-wing">Open project →</a>
+      </div>
+      <div class="infinite-loop-wrapper">
+        <div class="infinite-loop-gallery" id="bat-wing-gallery">
+          <img src="assets/img/bat-wing/p22-03.jpg" width="865" height="764" alt="Bat-wing — technical view" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/bat-wing/9-web.jpg" width="1800" height="1800" alt="Bat-wing — main render" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/bat-wing/8-web.jpg" width="1200" height="1200" alt="Bat-wing — 3/4 view" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/bat-wing/7-web.jpg" width="1200" height="1200" alt="Bat-wing — exploded view" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/bat-wing/6-web.jpg" width="1200" height="1200" alt="Bat-wing — on e-bike" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/bat-wing/5-web.jpg" width="1200" height="1200" alt="Bat-wing — side profile" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/bat-wing/4-web.jpg" width="1200" height="1200" alt="Bat-wing — wing detail, study 4" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/bat-wing/3-web.jpg" width="1200" height="967" alt="Bat-wing — wing detail, study 3" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/bat-wing/2-web.jpg" width="1200" height="967" alt="Bat-wing — wing detail, study 2" loading="lazy" tabindex="0" role="button">
+          <img src="assets/img/bat-wing/1-web.jpg" width="1200" height="967" alt="Bat-wing — wing detail, study 1" loading="lazy" tabindex="0" role="button">
+        </div>
+      </div>
+    </section>
+
+  </div>
+  <aside class="deck-rail" aria-hidden="true">
+    <p class="rail-count"><span class="rail-cur t-text-swap">01</span><span class="rail-sep">/</span><span class="rail-total">04</span></p>
+    <p class="rail-name t-text-swap">SHOCK!</p>
+    <div class="rail-bar"><div class="rail-fill"></div></div>
+  </aside>
+</div>
+
+<!-- ============================================================
+     Outro
+     ============================================================ -->
+<section class="outro">
+  <div class="container">
+    <h2 class="reveal">Like what you see?</h2>
+    <p class="lead reveal">Every project started as a sketch; let's turn yours into the next one.</p>
+    <a class="btn primary reveal" href="contacts.html">Get in touch</a>
+  </div>
+</section>
+
+</main>
+
+<div class="project-detail" id="p-shock" aria-hidden="true">
+  <button class="pd-close" type="button" aria-label="Close">✕</button>
+  <div class="pd-body">
+    <div class="pd-head">
+      <img class="pd-cover" src="assets/img/scene/shock.png" alt="SHOCK! cover">
+      <div class="pd-info">
+        <p class="pd-kicker">01 · Bachelor's thesis · 2024</p>
+        <h2 class="pd-title">SHOCK!</h2>
+      <p class="pd-text">A 3D-printed lattice tire that turns every impact into stored energy. Puncture-proof, more comfortable, sustainable by design.</p>
+      </div>
+    </div>
+<div class="pd-grid">
+      <img src="assets/img/detail/shock/2-web.jpg" alt="SHOCK! — photo 2" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/shock/3-web.jpg" alt="SHOCK! — photo 3" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/shock/4-web.jpg" alt="SHOCK! — photo 4" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/shock/5-web.jpg" alt="SHOCK! — photo 5" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/shock/6-web.jpg" alt="SHOCK! — photo 6" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/shock/7-web.jpg" alt="SHOCK! — photo 7" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/shock/8-web.jpg" alt="SHOCK! — photo 8" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/shock/9-web.jpg" alt="SHOCK! — photo 9" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/shock/10-web.jpg" alt="SHOCK! — photo 10" tabindex="0" role="button" width="1600" height="1200">
+    </div>
+  </div>
+</div>
+
+<div class="project-detail" id="p-elio" aria-hidden="true">
+  <button class="pd-close" type="button" aria-label="Close">✕</button>
+  <div class="pd-body">
+    <div class="pd-head">
+      <img class="pd-cover" src="assets/img/scene/elio.png" alt="ELIO — cover">
+      <div class="pd-info">
+        <p class="pd-kicker">02 · 2024–2025 · with Giada Arena</p>
+        <h2 class="pd-title">ELIO</h2>
+      <p class="pd-text">A solar-powered folding scooter for urban micromobility. Flexible panels integrate into the handlebar and the footboard; removable battery, 12 kg, up to 30 km per charge.</p>
+      </div>
+    </div>
+<div class="pd-grid">
+      <img src="assets/img/detail/elio/2-web.jpg" alt="ELIO — photo 2" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/elio/3-web.jpg" alt="ELIO — photo 3" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/elio/4-web.jpg" alt="ELIO — photo 4" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/elio/5-web.jpg" alt="ELIO — photo 5" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/elio/6-web.jpg" alt="ELIO — photo 6" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/elio/7-web.jpg" alt="ELIO — photo 7" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/elio/8-web.jpg" alt="ELIO — photo 8" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/elio/9-web.jpg" alt="ELIO — photo 9" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/elio/10-web.jpg" alt="ELIO — photo 10" tabindex="0" role="button" width="1600" height="1200">
+    </div>
+  </div>
+</div>
+
+<div class="project-detail" id="p-silky-skin" aria-hidden="true">
+  <button class="pd-close" type="button" aria-label="Close">✕</button>
+  <div class="pd-body">
+    <div class="pd-head">
+      <img class="pd-cover" src="assets/img/scene/silky-skin.png" alt="Silky Skin — cover">
+      <div class="pd-info">
+        <p class="pd-kicker">03 · 2023 · Braun</p>
+        <h2 class="pd-title">Silky Skin</h2>
+      <p class="pd-text">A universal epilator with interchangeable heads, a 360° pivoting head and gel cooling, designed to ease pain and improve everyday comfort.</p>
+      </div>
+    </div>
+<div class="pd-grid">
+      <img src="assets/img/detail/silky-skin/2-web.jpg" alt="Silky Skin — photo 2" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/silky-skin/3-web.jpg" alt="Silky Skin — photo 3" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/silky-skin/4-web.jpg" alt="Silky Skin — photo 4" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/silky-skin/5-web.jpg" alt="Silky Skin — photo 5" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/silky-skin/6-web.jpg" alt="Silky Skin — photo 6" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/silky-skin/7-web.jpg" alt="Silky Skin — photo 7" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/silky-skin/8-web.jpg" alt="Silky Skin — photo 8" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/silky-skin/9-web.jpg" alt="Silky Skin — photo 9" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/silky-skin/10-web.jpg" alt="Silky Skin — photo 10" tabindex="0" role="button" width="1600" height="1200">
+    </div>
+  </div>
+</div>
+
+<div class="project-detail" id="p-bat-wing" aria-hidden="true">
+  <button class="pd-close" type="button" aria-label="Close">✕</button>
+  <div class="pd-body">
+    <div class="pd-head">
+      <img class="pd-cover" src="assets/img/scene/bat-wing.png" alt="Bat-wing — cover">
+      <div class="pd-info">
+        <p class="pd-kicker">04 · Design Studio 3 · 2025</p>
+        <h2 class="pd-title">Bat-wing</h2>
+      <p class="pd-text">A saddle with moving wing structures that absorb impacts and turn them into smooth motion. Carbon and memory foam cut weight, up to 40% more absorption than a traditional saddle.</p>
+      </div>
+    </div>
+<div class="pd-grid">
+      <img src="assets/img/detail/bat-wing/2-web.jpg" alt="Bat-wing — photo 2" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/bat-wing/3-web.jpg" alt="Bat-wing — photo 3" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/bat-wing/4-web.jpg" alt="Bat-wing — photo 4" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/bat-wing/5-web.jpg" alt="Bat-wing — photo 5" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/bat-wing/6-web.jpg" alt="Bat-wing — photo 6" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/bat-wing/7-web.jpg" alt="Bat-wing — photo 7" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/bat-wing/8-web.jpg" alt="Bat-wing — photo 8" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/bat-wing/9-web.jpg" alt="Bat-wing — photo 9" tabindex="0" role="button" width="1600" height="1200">
+      <img src="assets/img/detail/bat-wing/10-web.jpg" alt="Bat-wing — photo 10" tabindex="0" role="button" width="1600" height="1200">
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <p class="footer-brand">Leonardo Macchiarini</p>
+        <p class="footer-note">Product designer — Florence, Italy.</p>
+      </div>
+      <div>
+        <h2>Contacts</h2>
+        <ul class="footer-links">
+          <li><a href="mailto:macchiarini.leonardo@gmail.com">macchiarini.leonardo@gmail.com</a></li>
+          <li><a href="tel:+393932927646">+39&nbsp;393&nbsp;292&nbsp;7646</a></li>
+          <li>Bagno a Ripoli (FI), Italy</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Sections</h2>
+        <ul class="footer-links">
+          <li><a href="about.html">01 · About me</a></li>
+          <li><a href="cv.html">02 · CV</a></li>
+          <li><a href="projects.html">03 · My projects</a></li>
+          <li><a href="contacts.html">04 · Contacts</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Portfolio — Leonardo Macchiarini</span>
+      <span>2026</span>
+    </div>
+  </div>
+</footer>
+<dialog id="lightbox" class="lightbox" aria-label="Image gallery">
+  <figure class="lb-fig">
+    <div class="lb-bar">
+      <span class="lb-cap"></span>
+      <span class="lb-count"></span>
+      <button class="lb-btn lb-close" type="button" aria-label="Close gallery"><svg class="od-icon" style="--od-icon-size:1.4em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <img class="lb-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="">
+    <div class="lb-nav">
+      <button class="lb-btn lb-prev" type="button" aria-label="Previous image"><svg class="od-icon" style="--od-icon-size:1.5em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <button class="lb-btn lb-next" type="button" aria-label="Next image"><svg class="od-icon" style="--od-icon-size:1.5em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+  </figure>
+</dialog>
+
+<!-- Custom Cursor Elements -->
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+
+</body>
+</html>
