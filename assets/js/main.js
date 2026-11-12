@@ -129,6 +129,11 @@
         img.classList.remove("swap", "swap-next", "swap-prev");
         img.classList.add(dir === -1 ? "swap-prev" : "swap-next");
         requestAnimationFrame(() => requestAnimationFrame(() => img.classList.remove("swap", "swap-next", "swap-prev")));
+        // cross-blur: l'immagine sfoca durante il cambio, poi torna nitida
+        img.style.filter = "blur(4px) saturate(0.85) contrast(1.02) brightness(0.95)";
+        requestAnimationFrame(() => {
+          img.style.filter = "saturate(0.85) contrast(1.02) brightness(0.95)";
+        });
       }
       img.src = src.currentSrc || src.src;
       img.alt = src.alt;
@@ -282,24 +287,24 @@
     return { proxy, cover, panel, scene, dx, dy, scale };
   };
 
-  /* entrata coreografica del pannello: slide + stagger dei testi.
-     Separiamo la slide del contenitore dal volo del prodotto: il pannello
-     parte subito, il prodotto lo raggiunge e atterra sul suo settle. */
-  const slideInPanel = (panel) => {
+  /* entrata coreografica del pannello: un unico movimento.
+     Il pannello scivola e appare in un colpo solo (non c'è più il doppio
+     livello di entrata: container che scivola + testi che staggered-entry
+     dopo). I testi entrano con stagger non uniforme per importanza:
+     kicker (lead, 0ms) → titolo (50ms) → testo (100ms). */
+  const enterPanel = (panel) => {
     panel.style.visibility = "visible";
     gsap.killTweensOf(panel);
     gsap.fromTo(panel,
-      { x: "100%" },
-      { x: "0%", duration: 0.72, ease: "expo.out", overwrite: "auto" }
+      { x: "100%", opacity: 0 },
+      { x: "0%", opacity: 1, duration: 0.6, ease: "power3.out", overwrite: "auto" }
     );
-  };
-  const revealPanelContent = (panel) => {
-    if (reduced) return;
     const items = panel.querySelectorAll(".pd-kicker, .pd-title, .pd-text");
     if (!items.length) return;
     gsap.fromTo(items,
-      { y: 16, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.55, ease: "power3.out", stagger: 0.07, delay: 0.35,
+      { y: 12, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.5, ease: "power3.out",
+        stagger: { from: "start", amount: 0.15, grid: "auto" },
         overwrite: "auto", clearProps: "transform,opacity" }
     );
   };
@@ -319,8 +324,7 @@
       gsap.to(bgImg, { scale: 1.12, duration: 0.7, ease: "power3.out", overwrite: "auto" });
     }
     // il pannello scivola; il prodotto lo raggiunge in volo
-    slideInPanel(panel);
-    revealPanelContent(panel);
+    enterPanel(panel);
     // cross-fade: la cover appare mentre il prodotto è ancora in volo,
     // così non c'è stop brusco quando atterra (nessun "scatto")
     gsap.to(cover, { opacity: 1, duration: 0.25, delay: 0.15, ease: "power2.out", overwrite: "auto" });
@@ -363,9 +367,8 @@
     if (plan) {
       startFlight(plan);
     } else if (!reduced) {
-      // nessun volo (deep link): stessa slide coreografica, senza prodotto
-      slideInPanel(panel);
-      revealPanelContent(panel);
+      // nessun volo (deep link): stessa entrata coreografica, senza prodotto
+      enterPanel(panel);
     }
   };
 
@@ -604,7 +607,13 @@
   measure();
   onFrame();
 
-  /* ---------------- Page transitions (fade between pages) ---------------- */
+  /* ---------------- Page transitions (direction-aware between pages) ---------------- */
+  const pageOrder = ["index.html", "about.html", "cv.html", "projects.html", "contacts.html"];
+  const pageIndex = (path) => {
+    const m = path.match(/([^\/]+)\.html$/);
+    return m ? pageOrder.indexOf(m[1]) : -1;
+  };
+  let lastPath = location.pathname;
   const pt = document.createElement("div");
   pt.className = "page-transition";
   document.body.appendChild(pt);
@@ -629,7 +638,12 @@
     // non intercettare i link che aprono i pannello progetto (già gestiti altrove)
     if (link.classList.contains("open-project")) return;
     e.preventDefault();
-    pt.classList.remove("is-hidden");
+    const idxCur = pageIndex(lastPath);
+    const idxNew = pageIndex(url.pathname);
+    pt.className = "page-transition";
+    if (idxNew > idxCur) pt.classList.add("slide-next");   // avanti: entra da destra
+    else if (idxNew < idxCur) pt.classList.add("slide-prev"); // indietro: entra da sinistra
+    // altrimenti (stessa pagina, raro): solo fade
     setTimeout(() => { location.href = href; }, 450);
   }, { capture: true });
 })();
